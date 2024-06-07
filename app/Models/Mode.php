@@ -9,6 +9,13 @@ class Mode extends Model
 {
     use HasFactory;
     protected $fillable = [
-        "name"
+        'name'
     ];
+
+    public function student(){
+        return $this->hasMany('App\Student','mode_id');
+    }
+    public function application(){
+        return $this->hasMany('App\Application','mode_id');
+    }
 }

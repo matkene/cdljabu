@@ -13,6 +13,8 @@ class BloodgroupController extends Controller
     public function index()
     {
         //
+        $bloodgroups = Bloodgroup::all();
+        return view('admin.bloodgroup.index', ['bloodgroups' => $bloodgroups]);
     }
 
     /**
@@ -21,14 +23,35 @@ class BloodgroupController extends Controller
     public function create()
     {
         //
+       
+        return view('admin.bloodgroup.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, Bloodgroup $bloodgroup)
     {
-        //
+       // dd($request);
+        
+     request()->validate(
+        [
+            'name' => 'required|unique:bloodgroups|min:1',
+                    ]
+        );
+
+     Bloodgroup::create(
+        [
+            'name' => request('name'),
+            
+        ]);  
+
+
+      // $bloodgroup = Bloodgroup::create($data);
+
+       return redirect('admin/bloodgroup/')->with('message','Bloodgroup created successfully');
+      // return redirect()->route('dashboard')->with('success', 'Item successfully created!');
+
     }
 
     /**
@@ -36,7 +59,9 @@ class BloodgroupController extends Controller
      */
     public function show(Bloodgroup $bloodgroup)
     {
-        //
+        //dd($request);
+        //$bloodgroup = Bloodgroup::create($request->all());
+        return view('admin/bloodgroup/show', ['bloodgroup' => $bloodgroup]);
     }
 
     /**
@@ -44,7 +69,10 @@ class BloodgroupController extends Controller
      */
     public function edit(Bloodgroup $bloodgroup)
     {
-        //
+        
+        //dd($request);
+       
+        return view('admin/bloodgroup/edit', ['bloodgroup'=> $bloodgroup]);
     }
 
     /**
@@ -52,14 +80,30 @@ class BloodgroupController extends Controller
      */
     public function update(Request $request, Bloodgroup $bloodgroup)
     {
-        //
+        //dd($request);
+        request()->validate(
+            [
+                'name' => ['required'],               
+        
+            ]
+            );
+           
+           $bloodgroup->update([
+            'name'=> request('name'),           
+           ]);
+
+           return redirect('/admin/bloodgroup')->with('message','Bloodgroup updated Successfully');
+           
+
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Bloodgroup $bloodgroup)
+    public function destroy(Request $request,Bloodgroup $bloodgroup)
     {
-        //
+        //dd($request);
+        $bloodgroup->delete();
+        return redirect('/admin/bloodgroup')->with('message', 'Bloodgroup deleted Successfully');
     }
 }

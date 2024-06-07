@@ -13,6 +13,14 @@ return new class extends Migration
     {
         Schema::create('studentcourses', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('programme_id');
+            $table->foreignId('course_id');
+            $table->foreignId('crsid');
+            $table->string('matric');
+            $table->string('term');
+            $table->string('level');
+            $table->string('semester');
+            $table->string('status');
             $table->timestamps();
         });
     }

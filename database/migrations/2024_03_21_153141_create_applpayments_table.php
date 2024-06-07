@@ -13,6 +13,17 @@ return new class extends Migration
     {
         Schema::create('applpayments', function (Blueprint $table) {
             $table->id();
+            $table->string('formno');
+            $table->string('sname');
+            $table->string('fname');
+            $table->string('oname');
+            $table->string('mphone');
+            $table->string('email');
+            $table->integer('term_id');
+            $table->integer('status');
+            $table->string('paymentcode');
+            $table->string('amount');
+            $table->string('rrr');
             $table->timestamps();
         });
     }

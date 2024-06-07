@@ -12,4 +12,9 @@ class Exam extends Model
     protected $fillable = [
         "name"
     ];
+
+    public function examboard()
+    {
+        return $this->hasMany(Exam::class);
+    }
 }

@@ -13,6 +13,13 @@ return new class extends Migration
     {
         Schema::create('sponsors', function (Blueprint $table) {
             $table->id();
+            $table->string('formno');
+            $table->string('name');
+            $table->string('relationship_id');
+            //$table->foreign('relationship_id')->references('id')->on('relationships');
+            $table->string('address');
+            $table->string('email');
+            $table->string('mphone');
             $table->timestamps();
         });
     }

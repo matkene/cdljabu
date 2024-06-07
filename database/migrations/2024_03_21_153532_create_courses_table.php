@@ -13,6 +13,17 @@ return new class extends Migration
     {
         Schema::create('courses', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('programme_id'); //another way
+            $table->foreignId('term_id');
+            $table->string('crsid');
+            $table->string('crsdesc');
+            $table->string('unit');
+            $table->string('level');
+            $table->string('remark');
+            $table->string('semester');
+            $table->integer('status');
+            $table->integer('user_id');
+            //$table->foreign('programme_id')->references('id')->on('programmes');             
             $table->timestamps();
         });
     }

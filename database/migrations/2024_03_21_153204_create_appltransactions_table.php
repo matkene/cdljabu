@@ -13,6 +13,16 @@ return new class extends Migration
     {
         Schema::create('appltransactions', function (Blueprint $table) {
             $table->id();
+            $table->string('formno');
+            $table->string('sname');
+            $table->string('fname');
+            $table->string('oname');
+            $table->string('paymentcode');
+            $table->string('rrr');
+            $table->string('transac_response');            
+            $table->string('transac_date');
+            $table->string('transac_info'); 
+            $table->string('amount');
             $table->timestamps();
         });
     }

@@ -9,6 +9,15 @@ class Sponsor extends Model
 {
     use HasFactory;
     protected $fillable = [
-        "name"
+        'formno','name','relationship_id','address','email','mphone'
     ];
+
+    public function student(){
+        return $this->hasMany(Student::class);
+    }
+
+    public function application()
+    {
+        return $this->hasMany(Application::class);
+    }
 }

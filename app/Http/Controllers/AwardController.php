@@ -14,6 +14,8 @@ class AwardController extends Controller
     public function index()
     {
         //
+        $awards = Award::all();
+        return view("", compact(""));
     }
 
     /**
@@ -22,6 +24,7 @@ class AwardController extends Controller
     public function create()
     {
         //
+
     }
 
     /**
@@ -30,6 +33,8 @@ class AwardController extends Controller
     public function store(Request $request)
     {
         //
+        $award = Award::create($request->all());
+        return redirect()->route("")->with("success","");
     }
 
     /**
@@ -38,6 +43,10 @@ class AwardController extends Controller
     public function show(Award $award)
     {
         //
+        $awards = Award::where("", $award->id)->get();
+        return view("", compact(""));
+
+
     }
 
     /**
@@ -46,6 +55,9 @@ class AwardController extends Controller
     public function edit(Award $award)
     {
         //
+        $award = Award::find($award->id);
+        return view("", compact(""));
+
     }
 
     /**
@@ -54,6 +66,8 @@ class AwardController extends Controller
     public function update(Request $request, Award $award)
     {
         //
+        $award->update($request->all());
+        return redirect()->route("")->with("success","");
     }
 
     /**
@@ -62,5 +76,8 @@ class AwardController extends Controller
     public function destroy(Award $award)
     {
         //
+        $award->delete();
+        return redirect()->route("")->with("success","");
+        
     }
 }

@@ -13,22 +13,37 @@ class StateController extends Controller
     public function index()
     {
         //
+        $states = State::all();
+        return view('admin.state.index',  ['states' => $states]);
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(State $state)
     {
         //
+        return view('admin.state.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, State $state)
     {
         //
+        $request->validate(
+            [
+               'name' => ['required','string','min:3'],
+            ]);
+
+        State::create(
+            [
+                'name'=> $request->name,
+            ]);
+
+        return redirect('/admin/state')->with('message','State created Successfully');
+
     }
 
     /**
@@ -37,6 +52,7 @@ class StateController extends Controller
     public function show(State $state)
     {
         //
+        return view('admin.state.show', ['state' => $state]);
     }
 
     /**
@@ -45,6 +61,7 @@ class StateController extends Controller
     public function edit(State $state)
     {
         //
+        return view('admin/state/edit', ['state' => $state]);
     }
 
     /**
@@ -52,7 +69,16 @@ class StateController extends Controller
      */
     public function update(Request $request, State $state)
     {
-        //
+        $request->validate(
+            [
+               'name' => ['required','string','min:3'],
+            ]);
+
+         $state->update(
+             [ 
+                'name'=> $request->name
+             ]);
+        return redirect('/admin/state')->with('message','State updated Successfully');
     }
 
     /**
@@ -61,5 +87,7 @@ class StateController extends Controller
     public function destroy(State $state)
     {
         //
+        $state->delete();
+        return redirect('/admin/state')->with('message','State deleted Successfully');
     }
 }

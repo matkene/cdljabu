@@ -13,6 +13,17 @@ return new class extends Migration
     {
         Schema::create('transactcodes', function (Blueprint $table) {
             $table->id();
+            $table->string('matric');
+            $table->string('level');
+            $table->foreignId('programme_id');
+            $table->string('semester');
+            $table->string('type');
+            $table->foreignId('term_id');                    
+            $table->string('pin');
+            $table->string('rrr');           
+            $table->string('amount');           
+            $table->string('tistatus');
+            $table->string('gescat');           
             $table->timestamps();
         });
     }

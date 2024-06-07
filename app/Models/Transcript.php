@@ -9,6 +9,6 @@ class Transcript extends Model
 {
     use HasFactory;
     protected $fillable = [
-        "name"
+        'matric','name', 'programme_id', 'term_id','transcript_school','transcript_address'
     ];
 }

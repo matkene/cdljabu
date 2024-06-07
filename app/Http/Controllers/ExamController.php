@@ -13,6 +13,10 @@ class ExamController extends Controller
     public function index()
     {
         //
+        //$exams = Exam::orderBy('created_at','desc')->latest()->paginate(10);
+        $exams = Exam::all();
+
+        return view('admin.exam.index',['exams' => $exams]);
     }
 
     /**
@@ -21,14 +25,26 @@ class ExamController extends Controller
     public function create()
     {
         //
+        return view('admin.exam.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, Exam $exam)
     {
         //
+        $request->validate([
+            'name' => 'required|unique:bloodgroups|min:3',
+        ]);
+
+        Exam::create(
+            [
+                'name'=> $request->name
+            ]);
+
+        return redirect('/admin/exam')->with('message','Exam created Successfully');
+
     }
 
     /**
@@ -37,6 +53,8 @@ class ExamController extends Controller
     public function show(Exam $exam)
     {
         //
+        
+        return view('admin/exam/show',['exam'=>$exam]);
     }
 
     /**
@@ -45,6 +63,8 @@ class ExamController extends Controller
     public function edit(Exam $exam)
     {
         //
+        
+        return view('admin/exam/edit', ['exam'=>$exam]);
     }
 
     /**
@@ -53,6 +73,18 @@ class ExamController extends Controller
     public function update(Request $request, Exam $exam)
     {
         //
+        $request->validate(
+            [
+                'name' => 'required|min:3',
+            ]);
+
+        $exam->update(
+           [
+                'name'=> $request->name
+           ]);
+
+        return redirect('admin/exam')->with('message','Exam updated succesfully');
+
     }
 
     /**
@@ -61,5 +93,8 @@ class ExamController extends Controller
     public function destroy(Exam $exam)
     {
         //
+        $exam->delete();
+
+        return redirect('/admin/exam')->with('mesaage','Exam deleted succesfully');
     }
 }

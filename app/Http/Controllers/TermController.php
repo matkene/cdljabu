@@ -13,22 +13,39 @@ class TermController extends Controller
     public function index()
     {
         //
+        $terms = Term::all();
+        return view('admin.term.index', ['terms'=> $terms]);
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Term $term)
     {
         //
+        return view('admin.term.create',['term'=>$term]);
+
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, Term $term)
     {
         //
+        $request->validate([
+          'name'=> 'required|unique:terms|min:3',
+          'status'=> 'required|min:3',
+        ]);
+
+        Term::create([
+         'name'=> $request->name,
+         'status'=> $request->status,
+        ]);
+
+     
+        return redirect('admin/term')->with('message','Term created Successfully');
+
     }
 
     /**
@@ -37,6 +54,8 @@ class TermController extends Controller
     public function show(Term $term)
     {
         //
+       // $terms = $term->terms()->create($request->all());
+        return view('admin.term.show', ['term' => $term]);
     }
 
     /**
@@ -45,6 +64,8 @@ class TermController extends Controller
     public function edit(Term $term)
     {
         //
+        
+        return view('admin.term.edit', ['term'=> $term]);
     }
 
     /**
@@ -53,6 +74,17 @@ class TermController extends Controller
     public function update(Request $request, Term $term)
     {
         //
+        $request->validate([
+            'name'=> ['required','string','min:3'],
+        ]);
+
+        $term->update(
+           [
+            'name' => $request->name
+           
+           ]);
+
+        return redirect('admin/term/')->with('status','Term updated Successfully');
     }
 
     /**
@@ -61,5 +93,7 @@ class TermController extends Controller
     public function destroy(Term $term)
     {
         //
+        $term->delete();
+        return redirect('admin/term')->with('status','Term deleted Successfully');
     }
 }

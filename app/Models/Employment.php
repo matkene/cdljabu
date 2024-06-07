@@ -9,6 +9,11 @@ class Employment extends Model
 {
     use HasFactory;
     protected $fillable = [
-        "name"
+        'formno','name','position','datefrom','dateto'
     ];
+
+    public function job()
+    {
+        return $this->hasMany(Job::class);
+    }
 }

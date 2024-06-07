@@ -9,6 +9,17 @@ class Studentcourse extends Model
 {
     use HasFactory;
     protected $fillable = [
-        "name"
+        'programme_id', 'matric', 'course_id','level' , 
+        'term', 'semester','crsid', 'status'
     ];
+
+    public function programme()
+    {
+        return $this->belongsTo(Programme::class);
+    }
+
+    public function courses()
+    {
+        return $this->belongsTo(Course::class);
+    }
 }

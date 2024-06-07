@@ -13,6 +13,8 @@ class CertgradeController extends Controller
     public function index()
     {
         //
+        $certgrades = Certgrade::all();
+        return view('admin.certgrade.index',['certgrades' => $certgrades]);
     }
 
     /**
@@ -21,14 +23,30 @@ class CertgradeController extends Controller
     public function create()
     {
         //
+        return view('admin.certgrade.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, Certgrade $certgrade)
     {
         //
+        $request->validate(
+            [
+                'name' => 'required|unique:certgrades|min:1',
+            ]
+            );
+    
+            Certgrade::create(
+            [
+                'name' => request('name'),
+                
+            ]); 
+            
+            
+        return redirect('admin/certgrade')->with('message','Certgrade created successfully');
+
     }
 
     /**
@@ -37,6 +55,9 @@ class CertgradeController extends Controller
     public function show(Certgrade $certgrade)
     {
         //
+
+        return view('admin/certgrade/show', ['certgrade'=> $certgrade]);  
+
     }
 
     /**
@@ -45,6 +66,9 @@ class CertgradeController extends Controller
     public function edit(Certgrade $certgrade)
     {
         //
+        
+        return view('admin/certgrade/edit', ['certgrade'=> $certgrade]);  
+
     }
 
     /**
@@ -53,6 +77,20 @@ class CertgradeController extends Controller
     public function update(Request $request, Certgrade $certgrade)
     {
         //
+        request()->validate(
+            [
+                'name' => 'required|min:1',             
+        
+            ]
+            );                       
+          
+           $certgrade ->update([
+            'name'=> request('name'),
+            
+           ]);
+           // redirect
+           return redirect('/admin/certgrade')->with('meesage','Updated Successfully');
+
     }
 
     /**
@@ -61,5 +99,7 @@ class CertgradeController extends Controller
     public function destroy(Certgrade $certgrade)
     {
         //
+        $certgrade->delete();
+        return redirect('/admin/certgrade')->with('meesage','Certgrade deleted successfully');
     }
 }

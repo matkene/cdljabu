@@ -9,6 +9,17 @@ class Feespayment extends Model
 {
     use HasFactory;
     protected $fillable = [
-        "name"
+        'pin','term_id','programme_id','level','semester','amount','applno',
+        'matric','type','amtpaid', 'amtdue','relvant'
     ];
+
+    public function term()
+    {
+        return $this->belongsTo(Term::class);
+    }
+
+    public function programme()
+    {
+        return $this->belongsTo(Programme::class);
+    }
 }

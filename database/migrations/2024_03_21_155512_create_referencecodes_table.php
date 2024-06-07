@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('referencecodes', function (Blueprint $table) {
             $table->id();
+            $table->string('matric');
+            $table->string('code');
+            $table->string('term');
+            $table->integer('status');
             $table->timestamps();
         });
     }

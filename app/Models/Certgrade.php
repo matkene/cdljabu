@@ -12,4 +12,6 @@ class Certgrade extends Model
     protected $fillable = [
         "name"
     ];
+
+    
 }

@@ -13,22 +13,48 @@ class FeeController extends Controller
     public function index()
     {
         //
+        $fees = Fee::with('Programme')->latest()->paginate(10);
+
+        return view('admin.fee.index', ['fee' => $fees]);
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Fee $fee)
     {
         //
+        return view('admin.fee.create', ['fee' => $fee]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, Fee $fee)
     {
         //
+        $fee->validate(
+            [
+                'programme_id' => ['required'],
+                'term_id' => ['required'],
+                'level'  => ['required'],
+                'type'  => ['required'],
+                'item' => ['required', 'min:6'],
+                'amount' => ['required','num'],
+                
+            ]);
+
+            Fee::create(
+                [
+                  'programme_id' => $request->name,  
+                  'term_id' => $request->term_id,
+                  'level' => $request->level,
+                  'type' => $request->type,
+                  'item' => $request->item, 
+                  'amount' => $request->amount, 
+                ]);
+
+        return redirect('admin/fee')->with('status', 'Fee created Successfully');
     }
 
     /**
@@ -37,6 +63,7 @@ class FeeController extends Controller
     public function show(Fee $fee)
     {
         //
+        return view('admin/fee/show', ['fee'=> $fee]);
     }
 
     /**
@@ -45,6 +72,7 @@ class FeeController extends Controller
     public function edit(Fee $fee)
     {
         //
+        return view('admin/fee/edit', ['fee'=> $fee]);
     }
 
     /**
@@ -53,6 +81,27 @@ class FeeController extends Controller
     public function update(Request $request, Fee $fee)
     {
         //
+        $fee->validate(
+            [
+                'programme_id' => ['required'],
+                'term_id' => ['required'],
+                'level'  => ['required'],
+                'type'  => ['required'],
+                'item' => ['required', 'min:6'],
+                'amount' => ['required','num'],
+            ]);
+
+           $fee->update(
+            [
+                'programme_id' => $request->name,  
+                  'term_id' => $request->term_id,
+                  'level' => $request->level,
+                  'type' => $request->type,
+                  'item' => $request->item, 
+                  'amount' => $request->amount, 
+            ]);
+            
+            return redirect('admin/fee')->with('status', 'Fee Updated Successfully');
     }
 
     /**
@@ -61,5 +110,8 @@ class FeeController extends Controller
     public function destroy(Fee $fee)
     {
         //
+        $fee->delete();
+
+        return redirect('admin/fee')->with('status','Fee deleted successfully');
     }
 }

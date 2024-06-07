@@ -9,6 +9,10 @@ class Grader extends Model
 {
     use HasFactory;
     protected $fillable = [
-        "name"
+        'name','point'
     ];
+
+    public function examresult(){
+        return $this->hasMany(Examresult::class,'grader_id');
+    }
 }

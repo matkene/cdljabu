@@ -13,6 +13,16 @@ return new class extends Migration
     {
         Schema::create('awards', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->string('school');
+            $table->string('programme');
+            $table->string('catprog');
+            $table->string('category_id');
+            $table->foreignId('programme_id');
+            $table->string('other');
+            $table->string('year');
+            $table->string('level');
+            $table->string('format');
             $table->timestamps();
         });
     }

@@ -9,6 +9,6 @@ class Learner extends Model
 {
     use HasFactory;
     protected $fillable = [
-        "name"
+        'name', 'position','email','user_id'
     ];
 }

@@ -13,6 +13,17 @@ return new class extends Migration
     {
         Schema::create('admissions', function (Blueprint $table) {
             $table->id();
+            $table->string('formno');
+            $table->string('name');
+            $table->string('mphone');
+            $table->string('state');
+            $table->string('lga');
+            $table->string('refno');
+            $table->string('programme');            
+            $table->foreignId('programme_id');
+            //$table->foreign('programme_id')->references('id')->on('programmes');
+            $table->string('level');
+            $table->string('year');
             $table->timestamps();
         });
     }

@@ -13,6 +13,8 @@ class SponsorController extends Controller
     public function index()
     {
         //
+        $sponsors = Sponsor::all();
+        return view('admin.sponsor.index',  ['sponsor' => $sponsors]);
     }
 
     /**
@@ -21,14 +23,26 @@ class SponsorController extends Controller
     public function create()
     {
         //
+        return view('admin.sponsor.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, Sponsor $sponsor)
     {
         //
+        $sponsor->validate(
+            [
+               'name' => ['required','string','min:3'],
+            ]);
+
+            Sponsor::create(
+            [
+                'name'=> $request->name,
+            ]);
+
+        return redirect('/admin/sponsor')->route("")->with("status",'Sponsor created Successfully');
     }
 
     /**
@@ -37,6 +51,7 @@ class SponsorController extends Controller
     public function show(Sponsor $sponsor)
     {
         //
+        return view('admin.sponsor.show', ['sponsor' => $sponsor]);
     }
 
     /**
@@ -45,6 +60,7 @@ class SponsorController extends Controller
     public function edit(Sponsor $sponsor)
     {
         //
+        return view('admin.sponsor.edit', ['sponsor' => $sponsor]);
     }
 
     /**
@@ -52,7 +68,18 @@ class SponsorController extends Controller
      */
     public function update(Request $request, Sponsor $sponsor)
     {
-        //
+      //
+      $sponsor->validate(
+        [
+           'name' => ['required','string','min:3'],
+        ]);
+
+     $sponsor->update(
+         [ 
+            'name'=> $request->name
+         ]);
+
+        return redirect('/admin/sponsor')->with("status","Sponsor updated Successfully");
     }
 
     /**
@@ -61,5 +88,7 @@ class SponsorController extends Controller
     public function destroy(Sponsor $sponsor)
     {
         //
+        $sponsor->delete();
+        return redirect('/admin/sponsor')->with("success","Sponsor deleted Successfully");
     }
 }

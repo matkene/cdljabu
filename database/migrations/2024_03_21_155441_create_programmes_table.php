@@ -12,7 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('programmes', function (Blueprint $table) {
-            $table->id();
+            $table->id();            
+            $table->string('progdesc');
+            $table->string('department');
+            $table->foreignId('school_id');
             $table->timestamps();
         });
     }

@@ -12,4 +12,11 @@ class Gender extends Model
     protected $fillable = [
         "name"
     ];
+
+    public function student(){
+        return $this->hasMany(Student::class);
+    }
+    public function application(){
+        return $this->hasMany(Application::class);
+    }
 }

@@ -9,6 +9,16 @@ class Fee extends Model
 {
     use HasFactory;
     protected $fillable = [
-        "name"
+        'programme_id', 'term_id', 'level', 'type', 'item', 'amount',
     ];
+
+    public function programme()
+    {
+        return $this->belongsTo(Programme::class);
+    }
+
+    public function term()
+    {
+        return $this->belongsTo(Term::class);
+    }
 }

@@ -13,6 +13,8 @@ class RoleController extends Controller
     public function index()
     {
         //
+        $roles = Role::all();
+        return view('admin.role.index',  ['roles' => $roles]);
     }
 
     /**
@@ -21,14 +23,28 @@ class RoleController extends Controller
     public function create()
     {
         //
+        return view('admin.role.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, Role $role)
     {
         //
+        //
+        $request->validate(
+            [
+               'name' => ['required','string','min:3'],
+            ]);
+
+            Role::create(
+            [
+                'name'=> $request->name,
+            ]);
+        
+         return redirect('/admin/role')->with('status','Role created Successfully');
+
     }
 
     /**
@@ -37,6 +53,7 @@ class RoleController extends Controller
     public function show(Role $role)
     {
         //
+        return view('admin.role.show', ['role' => $role]);
     }
 
     /**
@@ -45,6 +62,7 @@ class RoleController extends Controller
     public function edit(Role $role)
     {
         //
+        return view('admin.role.edit', ['role' => $role]);
     }
 
     /**
@@ -53,6 +71,17 @@ class RoleController extends Controller
     public function update(Request $request, Role $role)
     {
         //
+        $role->validate(
+        [
+           'name' => ['required','string','min:3'],
+        ]);
+
+     $role->update(
+         [ 
+            'name'=> $request->name
+         ]);
+
+        return redirect('/admin/role')->with("status","Role updated Successfully");
     }
 
     /**
@@ -61,5 +90,7 @@ class RoleController extends Controller
     public function destroy(Role $role)
     {
         //
+        $role->delete();
+        return redirect('/admin/role')->with('status','Role deleted Successfully');
     }
 }

@@ -9,6 +9,12 @@ class Applpayment extends Model
 {
     use HasFactory;
     protected $fillable = [
-        "name"
+        'formno','sname','fname','oname','mphone','email','term_id',
+        'paymentcode','rrr', 'status','amount'
     ];
+
+    public function term()
+    {
+        return $this->belongsTo(Term::class);
+    }
 }

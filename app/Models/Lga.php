@@ -9,6 +9,25 @@ class Lga extends Model
 {
     use HasFactory;
     protected $fillable = [
-        "name"
+       'name', 'state_id'
     ];
+
+    public function student(){
+        return $this->hasMany(Student::class);
+    }
+
+    public function application()
+    {
+        return $this->hasMany(Application::class);
+    }
+
+    public function admission()
+    {
+        return $this->hasMany(Admission::class);
+    }
+
+    public function state()
+    {
+        return $this->belongsTo(State::class);
+    }
 }

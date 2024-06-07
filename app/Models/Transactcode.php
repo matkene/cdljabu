@@ -9,6 +9,12 @@ class Transactcode extends Model
 {
     use HasFactory;
     protected $fillable = [
-        "name"
+        'pin','term_id','programme_id','level','semester','amount',
+        'tistatus','matric','type','rrr'
     ];
+
+    public function programme()
+    {
+     return $this->belongsTo(Programme::class);
+    }
 }

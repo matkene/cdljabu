@@ -9,6 +9,7 @@ class Appltransaction extends Model
 {
     use HasFactory;
     protected $fillable = [
-        "name"
+        'formno','sname','fname','oname','paymentcode','transac_response',
+        'transac_date','rrr', 'transac_info','amount'
     ];
 }

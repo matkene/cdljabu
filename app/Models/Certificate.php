@@ -12,4 +12,9 @@ class Certificate extends Model
     protected $fillable = [
         "name"
     ];
+
+    public function examboard()
+    {
+        return $this->hasMany(Examboard::class);
+    }
 }

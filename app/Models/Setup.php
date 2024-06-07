@@ -9,6 +9,6 @@ class Setup extends Model
 {
     use HasFactory;
     protected $fillable = [
-        "name"
+        "name","subname","address","logo","mphone","email","others"
     ];
 }

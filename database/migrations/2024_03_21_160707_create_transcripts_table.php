@@ -13,6 +13,12 @@ return new class extends Migration
     {
         Schema::create('transcripts', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->string('matric');
+            $table->foreignId('programme_id');
+            $table->foreignId('term_id');
+            $table->string('transcript_school');
+            $table->string('transcript_address');            
             $table->timestamps();
         });
     }

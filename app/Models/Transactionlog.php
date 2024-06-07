@@ -9,6 +9,9 @@ class Transactionlog extends Model
 {
     use HasFactory;
     protected $fillable = [
-        "name"
+        'matric','name','transactionid','remita_reference','transac_response',
+        'response_description','transac_date'
     ];
+
+    
 }

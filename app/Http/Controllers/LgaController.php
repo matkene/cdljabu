@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Lga;
+use App\Models\State;
+
 use Illuminate\Http\Request;
 
 class LgaController extends Controller
@@ -13,22 +15,46 @@ class LgaController extends Controller
     public function index()
     {
         //
+        $lgas = Lga::with('state')->latest()->paginate(10);
+        //$jobs =Job::with('employer')->latest()->paginate(4); 
+         
+        //$lgas = Lga::all();
+
+       // dd($lgas);
+        $states = State::all();
+        return view('admin.lga.index', ['lgas'=> $lgas,'states' => $states]);
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Lga $lga, State $state)
     {
         //
+        $states = State::all();
+        return view('admin.lga.create', ['lga'=> $lga, 'states' => $states]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, Lga $lga )
     {
         //
+        $request ->validate(
+            [
+               'name' => ['required','string','min:3'],
+               'state_id' => ['required'],
+            ]);
+
+         Lga::create(
+            [
+                'name'=> $request->name,
+                'state_id'=> $request->state_id,
+            ]);
+
+          return redirect('/admin/lga')->with('message', 'Lga created Successfully');  
+
     }
 
     /**
@@ -37,6 +63,8 @@ class LgaController extends Controller
     public function show(Lga $lga)
     {
         //
+        
+        return view('admin.lga.show', ['lga' => $lga]);
     }
 
     /**
@@ -45,6 +73,8 @@ class LgaController extends Controller
     public function edit(Lga $lga)
     {
         //
+        $states = State::all();
+        return view('admin/lga/edit', ['lga' => $lga, 'states' => $states]);
     }
 
     /**
@@ -53,6 +83,18 @@ class LgaController extends Controller
     public function update(Request $request, Lga $lga)
     {
         //
+        $request->validate(
+            [
+                'name'=> ['required','string','min:3'],
+                'state_id' => ['required'],
+            ]);
+
+        $lga->update(
+            [
+              'name' => $request->name,
+              'state_id'=> $request->state_id
+            ]);
+        return redirect('admin/lga')->with('message','Lga updated Successfully');
     }
 
     /**
@@ -61,5 +103,7 @@ class LgaController extends Controller
     public function destroy(Lga $lga)
     {
         //
+        $lga->delete();
+        return redirect('admin/lga')->with('message','Lga deleted Successfully');
     }
 }

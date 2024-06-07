@@ -13,6 +13,8 @@ class CertificateController extends Controller
     public function index()
     {
         //
+        $certificates = Certificate::all();
+        return view('admin.certificate.index',['certificates' => $certificates]);
     }
 
     /**
@@ -21,14 +23,29 @@ class CertificateController extends Controller
     public function create()
     {
         //
+        return view('admin.certificate.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, Certificate $certificate) 
     {
         //
+        $certificate->validate(
+        [
+            'name' => ['required', 'min:3'],
+        ]
+        );
+        
+        Certificate::create(
+            [
+            'name' => $request->name
+            ]
+        );
+
+        return redirect('admin/certificate')->with('message', 'Certficate created Successfully');
+
     }
 
     /**
@@ -37,6 +54,9 @@ class CertificateController extends Controller
     public function show(Certificate $certificate)
     {
         //
+
+        return view('admin/certificate/show', ['certificate'=> $certificate]);
+
     }
 
     /**
@@ -45,6 +65,8 @@ class CertificateController extends Controller
     public function edit(Certificate $certificate)
     {
         //
+        
+        return view('admin.certificate.edit', ['certificate' => $certificate]);
     }
 
     /**
@@ -53,6 +75,16 @@ class CertificateController extends Controller
     public function update(Request $request, Certificate $certificate)
     {
         //
+        $request->validate(
+            [
+                'name'=> ['required','min:3'],
+            ]
+            );
+        $certificate->update(
+            [
+                 'name' => $request->name
+            ]);
+        return redirect('/admin/certificate')->with('message','Certificate Updated Successfully');
     }
 
     /**
@@ -61,5 +93,7 @@ class CertificateController extends Controller
     public function destroy(Certificate $certificate)
     {
         //
+        $certificate->delete();
+        return redirect('/admin/certificate')->with('message','Certificate deleted successfully');
     }
 }

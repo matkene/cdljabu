@@ -13,22 +13,38 @@ class ModeController extends Controller
     public function index()
     {
         //
+        $modes = Mode::all();
+        return view('admin.mode.index',  ['modes' => $modes]);
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Mode $mode)
     {
         //
+        //dd($mode);
+        return view('admin.mode.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, Mode $mode)
     {
-        //
+      
+       $request->validate(
+        [
+           'name' => ['required','string','min:3'],
+        ]);
+
+    Mode::create(
+        [
+            'name'=> $request->name,
+        ]);
+
+
+        return redirect('/admin/mode')->with('message','Mode created Successfully');
     }
 
     /**
@@ -37,6 +53,7 @@ class ModeController extends Controller
     public function show(Mode $mode)
     {
         //
+        return view('admin.mode.show', ['mode' => $mode]);
     }
 
     /**
@@ -45,6 +62,7 @@ class ModeController extends Controller
     public function edit(Mode $mode)
     {
         //
+        return view('admin/mode/edit', ['mode' => $mode]);
     }
 
     /**
@@ -53,7 +71,18 @@ class ModeController extends Controller
     public function update(Request $request, Mode $mode)
     {
         //
-    }
+       //
+       $request->validate(
+        [
+           'name' => ['required','string','min:3'],
+        ]);
+
+     $mode->update(
+         [ 
+            'name'=> $request->name
+         ]);
+         return redirect('/admin/mode')->with('message','Mode updated Successfully');
+        }
 
     /**
      * Remove the specified resource from storage.
@@ -61,5 +90,7 @@ class ModeController extends Controller
     public function destroy(Mode $mode)
     {
         //
+        $mode->delete();
+        return redirect('/admin/mode')->with("message","Mode deleted Successfully");
     }
 }

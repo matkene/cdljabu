@@ -13,6 +13,13 @@ return new class extends Migration
     {
         Schema::create('transactionlogs', function (Blueprint $table) {
             $table->id();
+            $table->string('matric');
+            $table->string('name');
+            $table->integer('transactionid');
+            $table->string('remita_reference');
+            $table->string('transac_response');
+            $table->integer('response_description');                    
+            $table->string('transac_date');  
             $table->timestamps();
         });
     }

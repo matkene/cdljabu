@@ -13,22 +13,39 @@ class GraderController extends Controller
     public function index()
     {
         //
+        $graders = Grader::all();
+
+        return view('admin.grader.index', ['graders' => $graders]);
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Grader $grader)
     {
         //
+        return view('admin.grader.create',['grader' => $grader]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, Grader $grader)
     {
         //
+        $request->validate(
+            [
+               'name' => ['required','string','min:2'],
+               'point' => ['required'],
+            ]);
+
+        Grader::create(
+            [
+              'name'=> $request->name,
+              'point' => $request->point
+            ]);
+
+            return redirect('admin/grader')->with('message','Grader created Successfully');
     }
 
     /**
@@ -37,6 +54,7 @@ class GraderController extends Controller
     public function show(Grader $grader)
     {
         //
+        return view('admin/grader/show', ['grader'=> $grader]);
     }
 
     /**
@@ -45,6 +63,7 @@ class GraderController extends Controller
     public function edit(Grader $grader)
     {
         //
+        return view('admin/grader/edit', ['grader'=> $grader]);
     }
 
     /**
@@ -53,6 +72,21 @@ class GraderController extends Controller
     public function update(Request $request, Grader $grader)
     {
         //
+        $request->validate(
+            [
+               'name' => ['required','string','min:2'],
+               'point' => ['required'],
+            ]);
+
+        $grader->update(
+            [
+             'name' => $request->name,
+             'point' => $request->point
+            ]);
+
+          
+            return redirect('admin/grader')->with('message','Grader updated Successfully');
+
     }
 
     /**
@@ -61,5 +95,8 @@ class GraderController extends Controller
     public function destroy(Grader $grader)
     {
         //
+        $grader->delete();
+
+        return redirect('admin/grader')->with('message','Grader deleted Succesfully');
     }
 }

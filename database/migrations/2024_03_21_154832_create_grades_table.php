@@ -13,6 +13,12 @@ return new class extends Migration
     {
         Schema::create('grades', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('school_id');
+            $table->foreignId('programme_id');
+            $table->string('score');
+            $table->string('weighed_point');
+            $table->string('letter_grade');
+            $table->foreignId('term_id');           
             $table->timestamps();
         });
     }

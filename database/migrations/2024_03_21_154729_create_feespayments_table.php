@@ -13,6 +13,17 @@ return new class extends Migration
     {
         Schema::create('feespayments', function (Blueprint $table) {
             $table->id();
+            $table->string('pin');
+            $table->string('applno');
+            $table->string('matric');
+            $table->foreignId('term_id');
+            $table->foreignId('programme_id');
+            $table->string('level');
+            $table->string('type');
+            $table->string('semester');            
+            $table->string('amtpaid');
+            $table->string('amtdue');
+            $table->string('relvant');                                  
             $table->timestamps();
         });
     }

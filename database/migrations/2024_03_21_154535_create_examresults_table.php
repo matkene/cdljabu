@@ -13,6 +13,13 @@ return new class extends Migration
     {
         Schema::create('examresults', function (Blueprint $table) {
             $table->id();
+            $table->string('formno');
+            $table->string('examno');
+            $table->integer('exam_id');           
+            $table->foreignId('subject_id');            
+            $table->foreignId('grader_id');            
+            $table->string('status');
+            $table->integer('no_ofsitting');            
             $table->timestamps();
         });
     }

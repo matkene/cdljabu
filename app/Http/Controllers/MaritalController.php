@@ -13,6 +13,8 @@ class MaritalController extends Controller
     public function index()
     {
         //
+        $maritals = Marital::all();
+        return view('admin.marital.index',  ['maritals' => $maritals]);
     }
 
     /**
@@ -21,14 +23,26 @@ class MaritalController extends Controller
     public function create()
     {
         //
+        return view('admin.marital.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, Marital $marital)
     {
         //
+        $request->validate(
+            [
+               'name' => ['required','string','min:3'],
+            ]);
+
+        Marital::create(
+            [
+                'name'=> $request->name,
+            ]);
+
+        return redirect('/admin/marital')->with('message','Marital created Successfully');
     }
 
     /**
@@ -37,6 +51,7 @@ class MaritalController extends Controller
     public function show(Marital $marital)
     {
         //
+        return view('admin.marital.show', ['marital' => $marital]);
     }
 
     /**
@@ -45,6 +60,7 @@ class MaritalController extends Controller
     public function edit(Marital $marital)
     {
         //
+        return view('admin/marital/edit', ['marital' => $marital]);
     }
 
     /**
@@ -53,6 +69,16 @@ class MaritalController extends Controller
     public function update(Request $request, Marital $marital)
     {
         //
+        $request->validate(
+            [
+               'name' => ['required','string','min:3'],
+            ]);
+
+         $marital->update(
+             [ 
+                'name'=> $request->name
+             ]);
+        return redirect('/admin/marital')->with('messsage','Marital updated Successfully');
     }
 
     /**
@@ -61,5 +87,7 @@ class MaritalController extends Controller
     public function destroy(Marital $marital)
     {
         //
+        $marital->delete();
+        return redirect('/admin/marital')->with('message','Marital deleted Successfully');
     }
 }

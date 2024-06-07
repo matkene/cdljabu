@@ -13,6 +13,8 @@ class RelationshipController extends Controller
     public function index()
     {
         //
+        $relationships = Relationship::all();
+        return view('admin.relationship.index',  ['relationships' => $relationships]);
     }
 
     /**
@@ -21,14 +23,28 @@ class RelationshipController extends Controller
     public function create()
     {
         //
+        return view('admin.relationship.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, Relationship $relationship)
     {
         //
+        $request->validate(
+            [
+               'name' => ['required','string','min:3'],
+            ]);
+
+            Relationship::create(
+            [
+                'name'=> $request->name,
+            ]);
+        
+         return redirect('/admin/relationship')->with('message','Relationship created Successfully');
+
+
     }
 
     /**
@@ -37,6 +53,8 @@ class RelationshipController extends Controller
     public function show(Relationship $relationship)
     {
         //
+        return view('admin.relationship.show', ['relationship' => $relationship]);
+
     }
 
     /**
@@ -45,6 +63,8 @@ class RelationshipController extends Controller
     public function edit(Relationship $relationship)
     {
         //
+        return view('admin.relationship.edit', ['relationship' => $relationship]);
+
     }
 
     /**
@@ -52,7 +72,19 @@ class RelationshipController extends Controller
      */
     public function update(Request $request, Relationship $relationship)
     {
-        //
+    
+       //
+       $request->validate(
+        [
+           'name' => ['required','string','min:3'],
+        ]);
+
+     $relationship->update(
+         [ 
+            'name'=> $request->name
+         ]);
+
+        return redirect('/admin/relationship')->with("message","Relationship updated Successfully");
     }
 
     /**
@@ -61,5 +93,7 @@ class RelationshipController extends Controller
     public function destroy(Relationship $relationship)
     {
         //
+        $relationship->delete();
+        return redirect('/admin/relationship')->with("message","Relationship deleted Successfully");
     }
 }

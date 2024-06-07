@@ -13,6 +13,9 @@ class FeetypeController extends Controller
     public function index()
     {
         //
+        $feetypes = Feetype::all();
+        return view("", compact(""));
+
     }
 
     /**
@@ -21,6 +24,7 @@ class FeetypeController extends Controller
     public function create()
     {
         //
+        return view("");
     }
 
     /**
@@ -29,6 +33,7 @@ class FeetypeController extends Controller
     public function store(Request $request)
     {
         //
+
     }
 
     /**
@@ -37,6 +42,7 @@ class FeetypeController extends Controller
     public function show(Feetype $feetype)
     {
         //
+
     }
 
     /**
@@ -45,6 +51,8 @@ class FeetypeController extends Controller
     public function edit(Feetype $feetype)
     {
         //
+        $feetypes = Feetype::all();
+        return view("", compact(""));
     }
 
     /**
@@ -53,6 +61,8 @@ class FeetypeController extends Controller
     public function update(Request $request, Feetype $feetype)
     {
         //
+        $feetype->update($request->all());
+        return redirect()->route("")->with("success","");
     }
 
     /**
@@ -61,5 +71,7 @@ class FeetypeController extends Controller
     public function destroy(Feetype $feetype)
     {
         //
+        $feetype->delete();
+        return redirect()->route("")->with("success","");
     }
 }
