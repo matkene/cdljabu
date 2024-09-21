@@ -37,6 +37,23 @@ use Illuminate\Http\Request;
 
 class AdmissionController extends Controller
 {
+
+    public function admission_dashboard(){
+        return view('admission.dashboard.index');
+    }
+
+    public function admissionApplicationDashboard(){
+        return view('admission.dashboard.application');
+    }
+
+    public function manageAdmissionDashboard(){
+        return view('admission.dashboard.admission');
+    }
+   /*
+    public function adminStudentDashboard(){
+        return view('admin.dashboard.student');
+    }
+        */
     //
     public function index(){
         $admission = Admission::all();
@@ -81,7 +98,7 @@ class AdmissionController extends Controller
             ->withGenders($genders);
             */           
         }else{
-            return redirect('/admission/applicant')->with('status', 'This Admission Number exists.');            
+            return redirect('/admission/applicant')->with('message', 'This Admission Number exists.');            
         }
         
     }
@@ -145,7 +162,7 @@ class AdmissionController extends Controller
             
            $user->save();
 
-        return redirect('/admission/applicant')->with('status', 'Canditate Details had been successfully created');
+        return redirect('/admission/applicant')->with('message', 'Canditate details had been successfully created');
     }
     //
       public function dashboard(){
@@ -199,6 +216,8 @@ class AdmissionController extends Controller
         //dd($request);
         $admissions = DB::table('admissions')
         ->leftjoin('awards','awards.id','=','admissions.programme')
+        //->leftjoin('programmes','programmes.id','=','admissions.programme')
+
         ->select('admissions.*','awards.name as aname','awards.programme as aschool','awards.year as ayear')
         ->where('admissions.programme_id',$request->input('programme_id'))
         ->get();
@@ -245,10 +264,12 @@ class AdmissionController extends Controller
     public function admit(){
         $applications = DB::table('applications')
         ->leftjoin('admissions','applications.formno','=','admissions.formno')
+        ->leftjoin('users','applications.email','=','users.email')
         ->leftjoin('programmes','applications.programme_id','=','programmes.id')
         ->leftjoin('genders','applications.gender_id','=','genders.id')
         ->leftjoin('states','applications.state_id','=','states.id')
-        ->select('applications.*','programmes.progdesc as schoolname','genders.name as gendername','states.name as statename')
+        ->select('applications.*','programmes.progdesc as schoolname','genders.name as gendername',
+        'states.name as statename','users.role_id as uroles')
         ->get();
 
         $count  =  DB::table('applications')
@@ -284,7 +305,7 @@ class AdmissionController extends Controller
             */
         }else{
             // Display a message that shows it had been admitted before
-            return redirect('/admission/admit')->with('message', 'This Admission Number had been offered Provisional Admission before.');
+            return redirect('/admission/admit')->with('message', 'This admission number had been offered Provisional Admission before.');
 
         }
 
@@ -329,7 +350,7 @@ class AdmissionController extends Controller
             ->withApplication($application); */
         }else{
             // Display a message that shows it had been admitted before
-            return redirect('/admission/readmit')->with('status', 'This Admission Number had not been offered Provisional Admission before.');
+            return redirect('/admission/readmit')->with('message', 'This Admission Number had not been offered Provisional Admission before.');
 
         }
 
@@ -440,7 +461,7 @@ class AdmissionController extends Controller
     
 
     public function admitCanditate(Request $request){
-        //dd($request);
+       ///dd($request->award_id);
         $request->validate([        
             'award_id'=>'required',
             'programme_id'=>'required',
@@ -463,24 +484,28 @@ class AdmissionController extends Controller
         ->get()
         ->toArray();
 
-       
+        $fullname = @$applications[0]->sname.' '.@$applications[0]->fname.' '.@$applications[0]->oname;
         //echo '<pre>';
         //print_r($applications);
+        //print_r(@$applications[0]->sname);
         //echo '<pre>';
-        //die();
+       // die();
+
+       $session = '2024/2025';      
+       $terms = Term::where('name',$session)->get()->toArray();
 
         $sponsorname = @unserialize($applications[0]->sponsorname);
         $sponsoraddr = @unserialize($applications[0]->sponsoraddr);
         $sponsoremail = @unserialize($applications[0]->sponsoremail);
         $sponsormphone = @unserialize($applications[0]->sponsormphone);
-        $relations = @unserialize($applications[0]->relations);
-       
+        $relation = @unserialize($applications[0]->relations);
+        $relationships = Relationship::where('name',$relation)->get()->toArray(); //Get the id
+        $relations = $relationships[0]['id'];
 
-       $session = '2023/2024';      
-       $terms = Term::where('name',$session)->get()->toArray();
-       $fullname = @$applications[0]->sname.' '.@$applications[0]->fname.' '.@$applications[0]->oname;
+      
+       //$fullname = @$applications[0]->sname.' '.@$applications[0]->fname.' '.@$applications[0]->oname;
        //$name_nok = @$applications[0]->sname_nok.' '.@$applications[0]->fname_nok.' '.@$applications[0]->oname_nok;
-        //dd($terms);
+        //dd($relations);
         
          $admissions=new Admission([
             'formno'=>$request->input('admissionNumber'),
@@ -501,6 +526,7 @@ class AdmissionController extends Controller
        
        $student=new Student([
          'term_id'=> @$terms[0]['id'],
+         'term'=> @$terms[0]['name'],
          'fname'=>$request->input('fname'),
          'sname'=>$request->input('sname'),
          'oname'=>$request->input('oname'),   
@@ -527,12 +553,12 @@ class AdmissionController extends Controller
          'address_nok'=>@$sponsoraddr[0],
          'mphone_nok'=>@$sponsormphone[0],         
          'email_nok'=>@$sponsoremail[0],
-         'rel_nok'=>@$relations[0], 
+         'rel_nok'=>@$relation[0], 
          'year_ofentry'=>@$terms[0]['id'],
          'course_duration'=>@$award[0]['year'],
          'country_id'=>$request->input('country_id'), 
          'religion'=>$request->input('religion_id'),
-         'relationship_id'=> @$relations[0]           
+         'relationship_id'=> @$relations          
          
      ]);               
        $student->save();
@@ -993,16 +1019,15 @@ foreach ($applications as $result){
     
     //To print admission letter for students
     public function admletter(Request $request){
+        //dd($request);
         $ids = $request->input('formno');
-        //echo  $ids;
-        //die();
         $students = Student::where('applno',$ids)->get()->toArray();
 
         $id = @$students[0]['applno'];
         //d//ie();
         $status = 1;
-        $data['status'] = $status;
-        $data['applno'] = $id;
+        //$status = $status;
+        $applno = $id;
         //join with the table of admitted candidate when given
         $applications = DB::table('students')        
         ->leftjoin('admissions','admissions.formno','=','students.applno')
@@ -1022,7 +1047,8 @@ foreach ($applications as $result){
 
            
         
-        return view('admission.padmletter' ,$data);
+        return view('admission.padmletter' ,['application'=>$application, 
+        'applications'=>$applications,'status'=>$status]);
         /*->withApplications($applications); */
     }
 
@@ -1043,28 +1069,28 @@ foreach ($applications as $result){
         ->where('applications.admletter',$admletter)
         ->count();
         $data['count'] = $count;
-        return view('admission.admletter',$data);
+        return view('admission.admletter',['applications'=>$applications]);
         /*->withApplications($applications); */
     }
 
     public function getMatricList(){
-        $students = DB::table('students')
-        ->join('admissions','admissions.formno','=','students.applno')
-        ->leftjoin('awards','awards.id','=','admissions.programme')
-        ->leftjoin('matricupdate','matricupdate.applno','=','students.applno')
+        $admissions = DB::table('students')
+        ->join('admissions','admissions.formno','=','students.applno')        
+        ->join('awards','awards.id','=','admissions.programme')
+        ->join('matricupdate','matricupdate.applno','=','students.applno')
         ->select('students.*','awards.name as aname','awards.school as aschool','awards.year as ayear','matricupdate.received_date as dategen')
-        //->where()
+        ->where('students.applno','<>','students.matric')
         ->get();
-        //print_r($admissions);
+        //dd($admissions);  change leftjoin to join
         //die();
         $count = DB::table('students')
         ->join('admissions','admissions.formno','=','students.applno')
-        ->leftjoin('awards','awards.id','=','admissions.programme')
-        ->leftjoin('matricupdate','matricupdate.applno','=','students.applno')
+        ->join('awards','awards.id','=','admissions.programme')
+        ->join('matricupdate','matricupdate.applno','=','students.applno')
         ->select('students.*','awards.name as aname','awards.school as aschool','awards.year as ayear','matricupdate.received_date as dategen')
         ->count();
         //$data['count'] = $count;
-        return view('admission.matriclist',['count'=>$count, 'students'=>$students]);
+        return view('admission.matriclist',['count'=>$count, 'admissions'=>$admissions]);
        
     }
 

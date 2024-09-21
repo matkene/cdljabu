@@ -3,7 +3,7 @@
         APPLICATION FORM FOR {{$terms[0]->name}} SESSION  - EXAM RESULTS
     </x-slot:heading> 
 
-
+    <x-flash-message/> 
     <form method="POST" action="{{ route('applicant.exampost') }}" enctype="multipart/form-data">
         @csrf
           <input type="hidden" name="formno" value="{{$formno}}">
@@ -12,6 +12,7 @@
             <label for="exam_id" class="block text-sm font-medium leading-6 text-gray-900">Examination</label>
             <div class="mt-2">
                 <select id="exam_id" name="exam_id" 
+                required
                 class ="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6">
                 
                 <option value="0" disabled="disabled" selected>Select Exam</option>
@@ -28,6 +29,7 @@
             <label for="year" class="block text-sm font-medium leading-6 text-gray-900">Examination Year</label>
             <div class="mt-2">
                 <select id="year" name="year" 
+                required
                 class ="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6">
                 
                 <option value="0" disabled="disabled" selected>Select Examination Year</option>
@@ -44,7 +46,8 @@
           <div class="sm:col-span-3 mt-3">
             <label for="examno" class="block text-sm font-medium leading-6 text-gray-900">Examination No</label>
             <div class="mt-2">
-                <input type="examno" name="examno" id="examno" 
+                <input type="text" name="examno" id="examno" 
+                required
                 
                 class="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
               </div>
@@ -54,7 +57,8 @@
           <div class="sm:col-span-3 mt-3">
             <label for="center" class="block text-sm font-medium leading-6 text-gray-900">Center/School Name</label>
             <div class="mt-2">
-                <input type="center" name="center" id="center" 
+                <input type="center" name="center" id="center"
+                required 
                 
                 class="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
               </div>
@@ -65,6 +69,7 @@
             <label for="certificate" class="block text-sm font-medium leading-6 text-gray-900">Upload Certificate(Jpeg or Png. Max File size: 5MB)</label>
             <div class="mt-2">
                 <input type="file" name="certificate" id="certificate" 
+                required
                 
                 class="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
               </div>
@@ -89,6 +94,7 @@
                 <td class="whitespace-nowrap  px-6 py-4 font-medium">Subject</td>
                 <td class="whitespace-nowrap  px-6 py-4 font-medium">
                     <select id="subject_id" name="subject_id[]" 
+                    required
                     class ="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6">
                     <option value="0" disabled="disabled" selected>Select Subject</option>  
                     @foreach ($subjects as $subject)   
@@ -98,7 +104,8 @@
                </td>
                <td class="whitespace-nowrap  px-6 py-4 font-medium">Grade</td>
                 <td class="whitespace-nowrap  px-6 py-4 font-medium">
-                    <select id="grader_id" name="grader_id[]" 
+                    <select id="grader_id" name="grader_id[]"
+                    required 
                     class ="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6">
                     <option value="0" disabled="disabled" selected>Select Grade</option>  
                       @foreach ($graders as $grader)   

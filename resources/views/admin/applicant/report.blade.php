@@ -1,6 +1,7 @@
 <x-admin-role>
+  Manage Applications
     <x-slot:heading>
-        RECORDS ON REPORTS FOR APPLICATIONS
+        
     </x-slot:heading>    
     
     <x-flash-message/>
@@ -200,86 +201,128 @@
         </div>
 
     </form>
-
-
-
-
-
-
-
-
     
 
-                <div class="flex flex-col">
-                    <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">                      
-                      <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
-                        <div class="overflow-hidden">
-                          <table
-                            class="min-w-full text-left text-sm font-light text-surface dark:text-white">
-                            <thead
-                              class="border-b border-neutral-200 bg-neutral-50 font-medium dark:border-white/10 dark:text-neutral-800">
-                              <tr>
-                                <th scope="col" class=" px-6 py-4">S/N</th>
-                                <th scope="col" class=" px-6 py-4">Form No</th>
-                                <th scope="col" class=" px-6 py-4">Full Name</th>
-                                <th scope="col" class=" px-6 py-4">Email</th>
-                                <th scope="col" class=" px-6 py-4">Phone</th>
-                                <th scope="col" class=" px-6 py-4">Programme</th>
-                                <th scope="col" class=" px-6 py-4">Mode</th>
-                                <th scope="col" class=" px-6 py-4">Gender</th>
-                                <th scope="col" class=" px-6 py-4">State</th>
-                                <th scope="col" class=" px-6 py-4">LGA</th>
-                                <th scope="col" class=" px-6 py-4">Action</th>
-                                
-                              </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($applications as $key=>$appl)
-                                    
-                                
-                                
-                                <tr class="border-b border-neutral-200 dark:border-white/10">
-                            
-                                <td class="whitespace-nowrap  px-6 py-4 font-medium">{{++$key}}</td>
-                                <td class="whitespace-nowrap  px-6 py-4 font-medium">
-                                    {{$appl->formno}}
-                                </td>
-                                <td class="whitespace-nowrap  px-6 py-4 font-medium">
-                                    {{$appl->sname.' '.$appl->fname.' '.$appl->oname}}
-                                </td>
-                                <td class="whitespace-nowrap  px-6 py-4 font-medium">{{$appl->email}}
-                                </td>
-                                <td class="whitespace-nowrap  px-6 py-4 font-medium">{{$appl->mphone}}
-                                </td>
-                                <td class="whitespace-nowrap  px-6 py-4 font-medium">{{$appl->programme->progdesc}}
-                                </td>
-                                <td class="whitespace-nowrap  px-6 py-4 font-medium">{{$appl->mode->name}}
-                                </td>
-                                <td class="whitespace-nowrap  px-6 py-4 font-medium">{{$appl->gender->name}}
-                                </td>
-                                <td class="whitespace-nowrap  px-6 py-4 font-medium">{{$appl->state->name}}
-                                </td>
-                                <td class="whitespace-nowrap  px-6 py-4 font-medium">{{$appl->lga->name}}
-                                </td>
-                                <td class="whitespace-nowrap  px-6 py-4 font-medium">DOWNLOAD
-                                </td>
-                                
-                            
-                                
-                              </tr>
-                            
-                              
-                              @endforeach
-                            </tbody>
-                          </table>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                
-            </div>
-          
-       </div>
-          
-    
-       </x-admin-role>
+    <!-- Tabla -->
+    <div class="lg:w-full lg:ml-64 px-6 py-8 text-base text-opacity-100">RECORDS ON REPORTS FOR APPLICATIONS</div>
+
+  <div class="bg-white rounded-lg p-4 shadow-md my-4 max-w-full overflow-x-auto">
+  <table class="w-full table-auto border-collapse border border-slate-400">
+    <thead>
+       <tr class="text-left bg-primary">
+          <th
+             class="w-1/12 min-w-[60px] border border-slate-300 py-4 px-3 text-sm font-medium text-black lg:py-7 lg:px-4"
+             >
+             S/N
+          </th>
+          <th
+             class="w-1/12 min-w-[140px] border border-slate-300 py-4 px-3 text-sm font-medium text-black lg:py-7 lg:px-4"
+             >
+             Form No
+          </th>
+          <th
+             class="w-1/6 min-w-[200px] border border-slate-300 py-4 px-3 text-sm font-medium text-black lg:py-7 lg:px-4"
+             >
+             Name
+          </th>
+          <th
+             class="w-1/6 min-w-[120px] border border-slate-300 py-4 px-3 text-sm font-medium text-black lg:py-7 lg:px-4"
+             >
+             Email
+          </th>
+          <th
+             class="w-1/6 min-w-[100px]  border border-slate-300 py-4 px-3 text-sm font-medium text-black lg:py-7 lg:px-4"
+             >
+             Phone
+          </th>
+          <th
+             class="w-1/6 min-w-[100px] border border-slate-300 py-4 px-3 text-sm font-medium text-black lg:py-7 lg:px-4"
+             >
+             Programme
+          </th>
+          <th
+             class="w-1/6 min-w-[80px] border border-slate-300 py-4 px-3 text-sm font-medium text-black lg:py-7 lg:px-4"
+             >
+             Sex
+          </th>
+
+          <th
+             class="w-1/6 min-w-[100px] border border-slate-300 py-4 px-3 text-sm font-medium text-black lg:py-7 lg:px-4"
+             >
+             State
+          </th>
+          <th
+             class="w-1/6 min-w-[160px] border border-slate-300 py-4 px-3 text-sm font-medium text-black lg:py-7 lg:px-4"
+             >
+             Form Status
+          </th>
+       </tr>
+    </thead>
+    <tbody>      
+       
+        @foreach ($applications as $key=>$appl)
+       <tr>
+          <td
+             class="text-dark border-b border-l border-[#E8E8E8] bg-[#F3F6FF] dark:bg-dark-3 dark:border-dark dark:text-dark-7 py-5 px-2 text-center text-sm font-medium"
+             >
+             {{++$key}}
+          </td>
+          <td
+             class="text-dark border-b border-[#E8E8E8] bg-white dark:border-dark dark:bg-dark-2 dark:text-dark-7 py-5 px-2 text-left text-sm font-medium"
+             >
+             {{$appl->formno}}
+          </td>
+          <td
+             class="text-dark border-b border-[#E8E8E8] bg-[#F3F6FF] dark:bg-dark-3 dark:border-dark dark:text-dark-7 py-5 px-2 text-left text-sm font-medium uppercase"
+             >
+             {{$appl->sname.' '.$appl->fname.' '.$appl->oname}}
+          </td>
+          <td
+             class="text-dark border-b border-[#E8E8E8] bg-white dark:border-dark dark:bg-dark-2 dark:text-dark-7 py-5 px-2 text-left text-sm font-medium"
+             >
+             {{$appl->email}}
+          </td>
+          <td
+             class="text-dark border-b border-[#E8E8E8] bg-[#F3F6FF] dark:bg-dark-3 dark:border-dark dark:text-dark-7 py-5 px-2 text-left text-sm font-medium"
+             >
+             {{$appl->mphone}}
+          </td>
+
+          <td
+             class="text-dark border-b border-[#E8E8E8] bg-white dark:bg-dark-3 dark:border-dark dark:text-dark-7 py-5 px-2 text-left text-sm font-medium"
+             >
+             {{$appl->programme->progdesc}}
+          </td>
+          <td
+             class="text-dark border-b border-[#E8E8E8] bg-[#F3F6FF] dark:bg-dark-3 dark:border-dark dark:text-dark-7 py-5 px-2 text-left text-sm font-medium"
+             >
+             {{$appl->gender->name}}
+          </td>
+          <td
+             class="text-dark border-b border-[#E8E8E8] bg-white dark:bg-dark-3 dark:border-dark dark:text-dark-7 py-5 px-2 text-left text-sm font-medium"
+             >
+             {{$appl->state->name}}
+          </td>
+          <td
+             class="text-dark border-b border-r border-[#E8E8E8] bg-[#F3F6FF] dark:border-dark dark:bg-dark-2 dark:text-dark-7 py-5 px-2 text-left text-sm font-medium"
+             >
+             <?php
+             if($appl->submitted==1){
+              echo 'Submitted';
+             }else {
+              echo 'Not Submitted';
+             }
+             ?>
+             
+          </td>
+       </tr>
+       @endforeach
+       <tr class="border-b border-neutral-200 dark:border-white/10">
+        <td class="whitespace-nowrap  px-6 py-4 font-medium" colspan="9">
+          Total Record: {{$count}}</td>
+      </tr>
+    </tbody>
+ </table>
+</div>
+
+</x-admin-role>

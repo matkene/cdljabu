@@ -18,15 +18,12 @@
                     <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">                      
                       <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
                         <div class="overflow-hidden">
+                          Manage Admission Letters
                           <table
                             class="min-w-full text-left text-sm font-light text-surface dark:text-white">
                             <thead
                               class="border-b border-neutral-200 bg-neutral-50 font-medium dark:border-white/10 dark:text-neutral-800">
-                              <tr>
-                                
-                                <th scope="col" colspan="8"  class="px-6 py-4">Manage Admission Letters </th>
-                                
-                              </tr>
+                              
                               <tr>
                                 <th scope="col" class=" px-6 py-4">S/N</th>
                                 <th scope="col" class=" px-6 py-4">Admission No</th>
@@ -34,7 +31,7 @@
                                 <th scope="col" class=" px-6 py-4">Phone</th>                                
                                 <th scope="col" class=" px-6 py-4">State</th>
                                 <th scope="col" class=" px-6 py-4">Programme</th>
-                                <th scope="col" class=" px-6 py-4">Duration</th>
+                                <th scope="col" class=" px-6 py-4">Status</th>                                
                                 <th scope="col" class=" px-6 py-4">Action</th>
                                 
                               </tr>
@@ -47,7 +44,7 @@
                             
                                 <td class="whitespace-nowrap  px-6 py-4 font-medium">{{++$key}}</td>
                                 <td class="whitespace-nowrap  px-6 py-4 font-medium">{{$appl->formno}}</td>
-                                <td class="whitespace-nowrap  px-6 py-4 font-medium">{{$appl->sname. ' '.$appl->fname.' '.$appl->oname}}</td>
+                                <td class="whitespace-nowrap  px-6 py-4 font-medium uppercase">{{$appl->sname. ' '.$appl->fname.' '.$appl->oname}}</td>
                                 <td class="whitespace-nowrap  px-6 py-4 font-medium">{{$appl->mphone}}</td>
 
                                 <td class="whitespace-nowrap  px-6 py-4 font-medium">
@@ -55,9 +52,11 @@
                               <td class="whitespace-nowrap  px-6 py-4 font-medium">
                                 {{@$appl->schoolname}}
                             </td> 
+                            <?php // role=2 student, role=1 still waiting for admisison ?>
                             <td class="whitespace-nowrap  px-6 py-4 font-medium">
-                              {{@$appl->year}}
+                              {{$appl->uroles == 2 ? "Admitted" : "Pending" }}
                           </td> 
+                            
                           <td class="whitespace-nowrap  px-6 py-4 font-medium">
                             <form action="{{url('admission/admitnow')}}" method="POST">
                                 @csrf

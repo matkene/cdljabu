@@ -28,7 +28,7 @@
                             class="border-b border-neutral-200 bg-neutral-50 font-medium dark:border-white/10 dark:text-neutral-800">
                             <tr>
                               <th scope="col" class=" px-6 py-4">S/N</th>
-                              <th scope="col" class=" px-6 py-4">Role Name</th>
+                              <th scope="col" class=" px-6 py-4 text-left">Role Name</th>
                               
                               
                             </tr>
@@ -41,7 +41,7 @@
                               <tr class="border-b border-neutral-200 dark:border-white/10">
                           
                               <td class="whitespace-nowrap  px-6 py-4 font-medium">{{++$key}}</td>
-                              <td class="whitespace-nowrap  px-6 py-4 font-medium">
+                              <td class="whitespace-nowrap  px-6 py-4 font-medium text-left">
                                   <a href="/admin/role/show/{{$role->id}}">{{$role->name}} </a>
                               </td>
                                                        

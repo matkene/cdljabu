@@ -35,7 +35,7 @@ class ExamController extends Controller
     {
         //
         $request->validate([
-            'name' => 'required|unique:bloodgroups|min:3',
+            'name' => 'required|unique:exams|min:3',
         ]);
 
         Exam::create(
@@ -43,7 +43,7 @@ class ExamController extends Controller
                 'name'=> $request->name
             ]);
 
-        return redirect('/admin/exam')->with('message','Exam created Successfully');
+        return redirect('/admin/exam')->with('message','Exam created successfully');
 
     }
 
@@ -75,7 +75,7 @@ class ExamController extends Controller
         //
         $request->validate(
             [
-                'name' => 'required|min:3',
+               'name' => 'required|unique:exams|min:3',
             ]);
 
         $exam->update(

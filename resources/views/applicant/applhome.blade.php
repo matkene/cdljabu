@@ -2,19 +2,30 @@
     <x-slot:heading>
         APPLICATION FORM FOR {{$terms[0]->name}} SESSION  - PERSONAL INFORMATION
   </x-slot:heading>
+
+  <x-flash-message/>
+
+  @foreach($applications as $appl)
+  @endforeach
+
+  @if($count == 0 || $appl->submitted == 0)
+  
+
     <form method="POST" action="{{ route('applicant.applhome') }}">
         @csrf
         
         @if($count > 0)
         <input name="check" type="hidden" class="form-control" value="1" readonly>
         @endif
+           
 
-        @foreach($applications as $appl)
-        @endforeach
+        
+
+        
        
         <div class="mt-0 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
             <div class="sm:col-span-3">
-              <label for="formno" class="block text-sm font-medium leading-6 text-gray-900">Form Number</label>
+              <label for="formno" class="block text-sm font-medium leading-6 text-gray-900">Form Number </label>
               <div class="mt-2">
                 <input type="text" name="formno" id="formno"                 
                 value="{{($count > 0 ? $appl->formno: $application[0]->formno)}}"
@@ -169,17 +180,12 @@
             <div class="sm:col-span-3">
               <label for="dob" class="block text-sm font-medium leading-6 text-gray-900">DOB</label>
               <div class="mt-2">  
-                <?php if($appl->dob > 0){ ?>              
-                <input type="text" name="dob" id="dob" 
-                value = "{{$appl->dob}}" 
-                readonly
+                            
+                <input type="date" name="dob" id="dob" 
+                value = "{{@$appl->dob}}"   
+                required              
                 class="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-                <?php }else{?>
-                  <input type="date" name="dob" id="dob" 
-                  value = " " 
-                  required
-                  class="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-                 <?php }; ?>
+                
               
               </div>
             </div>
@@ -477,4 +483,16 @@
             </x-primary-button>
         </div>
     </form>
+
+  @else
+ 
+  <p>  * Filling of Application form completed.  </p>
+    <p>            
+    <a href="/applicant/printform"> 
+          <i class="fa-solid fa-print"></i> Click to Print form</a></p>
+
+    
+
+  
+  @endif
 </x-applicant-role>

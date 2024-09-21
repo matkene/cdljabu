@@ -76,15 +76,17 @@ class TermController extends Controller
         //
         $request->validate([
             'name'=> ['required','string','min:3'],
+            'status'=> ['required','string','min:3'],
         ]);
 
         $term->update(
            [
-            'name' => $request->name
+            'name' => $request->name,
+            'status' => $request->status
            
            ]);
 
-        return redirect('admin/term/')->with('status','Term updated Successfully');
+        return redirect('admin/term/')->with('message','Term updated Successfully');
     }
 
     /**

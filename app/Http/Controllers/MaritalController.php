@@ -78,7 +78,7 @@ class MaritalController extends Controller
              [ 
                 'name'=> $request->name
              ]);
-        return redirect('/admin/marital')->with('messsage','Marital updated Successfully');
+        return redirect('/admin/marital')->with('message','Marital updated Successfully');
     }
 
     /**

@@ -10,7 +10,7 @@ class Transactcode extends Model
     use HasFactory;
     protected $fillable = [
         'pin','term_id','programme_id','level','semester','amount',
-        'tistatus','matric','type','rrr'
+        'tistatus','matric','type','rrr','mphone'
     ];
 
     public function programme()

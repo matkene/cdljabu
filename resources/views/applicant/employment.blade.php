@@ -2,6 +2,11 @@
     <x-slot:heading>
         APPLICATION FORM FOR {{$terms[0]->name}} SESSION  - EMPLOYMENT
     </x-slot:heading> 
+
+    <x-flash-message/> 
+
+    @foreach($applications as $appls)
+    @endforeach
     @if($count > 0)
     <form method="POST" action="{{ route('applicant.sponsor') }}">
         @csrf
@@ -54,6 +59,7 @@
         </tbody>
         </table>
     </div>
+    @if($appls['submitted']==0)
 
     <div class="flex items-center justify-center mt-8 mb-4">
             
@@ -64,6 +70,7 @@
             {{ __('Save and Continue') }}
         </x-primary-button>
     </div>
+    @endif
     </form>
 
 
@@ -102,7 +109,7 @@
             <select id="datefrom" name="datefrom[]" 
             class ="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6" required>
             <option value="0" disabled="disabled" selected>Select Date From</option>
-            @for($i=1980;$i < 2020; $i++)                                        
+            @for($i=1980;$i < 2023; $i++)                                        
             <option value="{{$i}}">{{$i}}</option>  
             @endfor                                                            
         </select>
@@ -116,7 +123,7 @@
             <select id="dateto" name="dateto[]" 
             class ="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6" required>
             <option value="0" disabled="disabled" selected>Select Date To</option>
-            @for($i=1980;$i < 2020; $i++)                                        
+            @for($i=1980;$i < 2024; $i++)                                        
             <option value="{{$i}}">{{$i}}</option>  
             @endfor                                                            
         </select>

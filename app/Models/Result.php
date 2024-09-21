@@ -10,7 +10,7 @@ class Result extends Model
     use HasFactory;
     protected $fillable = [
         'matric', 'programme_id', 'course_id',  'level', 'semester', 'others', 
-        'term_id', 'grade_ids', 'mark_total', 'mark_score'
+        'term_id', 'grade_ids', 'mark_total', 'mark_score','status', 'crsid','ca_score'
     ];
 
     public function programme()

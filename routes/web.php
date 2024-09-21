@@ -1,39 +1,42 @@
 <?php
 
-use App\Http\Controllers\Auth\RegisteredUserController;
-use App\Http\Controllers\ApplicationController;
-use App\Http\Controllers\AdmissionController;
-use App\Http\Controllers\BloodgroupController;
-use App\Http\Controllers\CertgradeController;
-use App\Http\Controllers\CountryController;
-use App\Http\Controllers\CertificateController;
-use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\CourseController;
-use App\Http\Controllers\ExamController;
-use App\Http\Controllers\GenderController;
-use App\Http\Controllers\GraderController;
+use App\Models\Job;
+use App\Models\Marital;
+use App\Jobs\TranslateJob;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\JobController;
-use App\Http\Controllers\MaritalController;
-use App\Http\Controllers\ModeController;
-use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\LgaController;
-use App\Http\Controllers\ReligionController;
-use App\Http\Controllers\RelationshipController;
+use App\Http\Controllers\ExamController;
+use App\Http\Controllers\ModeController;
+use App\Http\Controllers\RoleController;
+use App\Http\Controllers\TermController;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\StateController;
 use App\Http\Controllers\TitleController;
-use App\Http\Controllers\TermController;
+use App\Http\Controllers\CourseController;
+use App\Http\Controllers\GenderController;
+use App\Http\Controllers\GraderController;
+use App\Http\Controllers\ResultController;
 use App\Http\Controllers\SchoolController;
-use App\Http\Controllers\SubjectController;
-use App\Http\Controllers\ProgrammeController;
+use App\Http\Controllers\CountryController;
+use App\Http\Controllers\MaritalController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\RoleController;
-use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\DB;
-use App\Models\Job;
-use App\Jobs\TranslateJob;
-use App\Http\Controllers\RegisterUserController;
 use App\Http\Controllers\SessionController;
-use App\Models\Marital;
+use App\Http\Controllers\StudentController;
+use App\Http\Controllers\SubjectController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ReligionController;
+use App\Http\Controllers\AdmissionController;
+use App\Http\Controllers\CertgradeController;
+use App\Http\Controllers\ProgrammeController;
+use App\Http\Controllers\BloodgroupController;
+use App\Http\Controllers\ApplicationController;
+use App\Http\Controllers\CertificateController;
+use App\Http\Controllers\RegisterUserController;
+use App\Http\Controllers\RelationshipController;
+use App\Http\Controllers\Auth\RegisteredUserController;
 
 Route::get('/', function () {
 
@@ -106,8 +109,9 @@ Route::post('/login',[SessionController::class,'store']);
 Route::post('/logout',[SessionController::class,'destroy']);
 */
 
+Route::get('/applicant/paystatus',[PaymentController::class,'apaystatus'])->name('applicant.apaystatus');
 
-//Route::post('/applicants/remita',['uses'=>'ApplicationController@remita_transaction','as'=>'applicants.remita','middleware'=>'roles','roles'=>'Applicant']);
+//Route::get('/applicant/paystatus',[PaymentController::class.'apaystatus']);
 Route::match(['get', 'post'],'/applicant/remitapay',[PaymentController::class,'remitapay'])->name('applicants.remitapay');
 Route::post('/applicant/remita/',[RegisterUserController::class,'remita_transaction'])->name('applicant.remita');
 
@@ -116,7 +120,13 @@ Route::post('authorize/register',[RegisterUserController::class,'storeUser']);
 Route::get('/authorize/login',[SessionController::class,'create'])->name('authorize.login');
 Route::post('authorize/login',[SessionController::class,'store']);
 Route::post('/logout',[SessionController::class,'destroy']);
-Route::get('/applicant/index',[ApplicationController::class,'index']);
+Route::get('/applicant/index',[ApplicationController::class,'index'])->name('applicant.index');
+
+
+Route::get('/student/dashboard',[SessionController::class,'student_dashboard']);
+Route::get('/admission/dashboard',[SessionController::class,'admission_dashboard']);
+
+
 
 //APPLICANT
 Route::get('/applicant/applhome',[ApplicationController::class,'applhome'])->name('applicant.applhome');
@@ -140,7 +150,125 @@ Route::get('/applicant/success',[ApplicationController::class,'success'])->name(
 Route::match(['get', 'post'],'/applicant/printform',[ApplicationController::class,'printform'])->name('applicant.printform');
 
 
+//12th June 2024
+/******************************STUDENTCONTROLLER******************************************************/
+//Admission Letter
+Route::get('/student/sadmletter',[StudentController::class,'sadmletter'])->name('student.sadmletter');
+Route::get('/student/examresult',[StudentController::class,'sexamresult'])->name('student.examresult');
+
+
+Route::get('/student',[StudentController::class,'index'])->name('student.index');
+Route::get('/student/biodata',[StudentController::class,'biodata'])->name('student.biodata');
+Route::post('/student/editbiodata',[StudentController::class,'editbiodata'])->name('student.editbiodata');
+Route::get('/student/editbiodata',[StudentController::class,'editbiodata'])->name('student.editbiodata');
+Route::post('/student/create',[StudentController::class,'create'])->name('student.create');
+//ADDED FOR SCHOOL FEES PAYMENTS
+Route::get('/student/payadvice',[PaymentController::class,'index'])->name('student.payadvice');
+Route::get('/student/payadvice_first',[PaymentController::class,'index_first'])->name('student.payadvice_first');
+Route::get('/student/payadvice_second',[PaymentController::class,'index_second'])->name('student.payadvice_second');
+Route::post('/student/check',[PaymentController::class,'checkpayment'])->name('student.check');
+Route::get('/student/applpay',[PaymentController::class,'applpay'])->name('student.applpay');
+Route::post('/student/remita',[PaymentController::class,'remita_transaction'])->name('student.remita');
+Route::get('/student/remitastatus',[PaymentController::class,'remitastatus'])->name('student.remitastatus');
+Route::match(['get', 'post'],'/student/remitapay',[PaymentController::class,'remita_pay'])->name('student.remita_pay');
+Route::match(['get', 'post'],'/student/remitabank',[PaymentController::class,'remitabank'])->name('student.remitabank');
+Route::get('/student/paystatus',[PaymentController::class,'paystatus'])->name('student.payments');
+Route::get('/student/receipt',[PaymentController::class,'receipt'])->name('student.receipt');
+Route::post('/student/printreceipt',[PaymentController::class,'printreceipt'])->name('student.printreceipt');
+Route::get('/student/methods',[PaymentController::class,'methods'])->name('student.methods');
+Route::post('/student/paymethods',[PaymentController::class,'paymethods'])->name('student.paymethods');
+Route::post('/student/remitaflex',[PaymentController::class,'remita_transactionflex'])->name('student.remitaflex');
+
+Route::get('/student/result',[ResultController::class,'getStudentResult'])->name('student.result');
+Route::post('/student/resultdisplay',[ResultController::class,'displayStudentResult'])->name('student.resultdisplay');
+
+Route::get('/exams/resultview',[ResultController::class,'resultview'])->name('exam.resultview');
+Route::post('/exams/resultviewall',[ResultController::class,'resultviewall'])->name('exam.resultviewall');
+Route::post('/exams/import',[ResultController::class,'import'])->name('exam.import');
+Route::get('/exams/upload',[ResultController::class,'indexresult'])->name('exam.index');
+
+
+
+
+
+Route::get('/student/course',[CourseController::class,'getStudentCourse'])->name('student.course');
+Route::post('/student/coursedisplay',[CourseController::class,'displayStudentCourse'])->name('student.coursedisplay');
+Route::post('/student/registerCourse',[CourseController::class,'registerCourse'])->name('student.registerCourse');
+Route::get('/student/courseprint',[CourseController::class,'getStudentCoursePrint'])->name('student.courseprint');
+Route::post('/student/coursep',[CourseController::class,'printStudentCourse'])->name('student.coursep');
+Route::get('/student/courseprint',[CourseController::class,'getStudentCoursePrint'])->name('student.courseprint');
+
+Route::get('/student/changepassword',[StudentController::class,'changepassword'])->name('student.changepassword');
+Route::post('/student/updatepassword',[StudentController::class,'updatePassword'])->name('student.updatepassword');
+
+//Route::get('/changepassword',['uses'=>'AuthController@changepassword','as'=>'admin.changepassword','middleware'=>'roles','roles'=>'Super Admin']);
+//Route::post('/updatepassword',['uses'=>'AuthController@updatePassword','as'=>'admin.updatepassword','middleware'=>'roles','roles'=>'Super Admin']);
+
+/*
+Route::get('/student/reference',['uses'=>'PaymentController@index','as'=>'student.reference']);
+Route::post('/student/check',['uses'=>'PaymentController@checkpayment','as'=>'student.check']);
+Route::get('/student/lms',['uses'=>'StudentController@lms','as'=>'student.lms']);
+Route::get('/student/changepassword',['uses'=>'StudentController@changepassword','as'=>'student.changepassword']);
+Route::post('/student/updatepassword',['uses'=>'StudentController@updatePassword','as'=>'student.updatepassword']);
+Route::get('/student/resultperstudent',['uses'=>'StudentController@resultperstudent','as'=>'student.resultperstudent']);
+Route::get('/student/findResultPerStudent',['uses'=>'StudentController@findResultPerStudent','as'=>'student.findResultPerStudent']);
+Route::get('/generate-docx', 'StudentController@generateDocx');
+*/
+
+
+
 //ADMIN APPLICATION
+Route::get('/admin/dashboard',[AdminController::class,'admin_dashboard']);
+Route::get('/admin/dashboard/application',[AdminController::class,'adminApplicationDashboard']);
+Route::get('/exams/dashboard/result',[AdminController::class,'adminResultDashboard']);
+Route::get('/exams/dashboard/student',[AdminController::class,'adminStudentResultDashboard']);
+Route::get('/exams/dashboard/',[AdminController::class,'exam_dashboard']);
+Route::get('/admin/dashboard/student',[AdminController::class,'adminStudentDashboard']);
+Route::get('/admin/dashboard/setting',[AdminController::class,'adminSettingDashboard']);
+Route::get('/admin/dashboard/setup',[AdminController::class,'adminSetupDashboard']);
+
+Route::get('/cadviser/dashboard/',[AdminController::class,'cadviser_dashboard']);
+Route::get('/cadviser/manage_level/',[AdminController::class,'cadviserManageLevel']);
+Route::post('/cadviser/level/',[AdminController::class,'ManageLevel'])->name('cadviser.manage_level');
+Route::post('/cadviser/manage_level/',[AdminController::class,'changeLevel'])->name('cadviser.level');
+Route::get('/cadviser/view_course/',[AdminController::class,'cadviserViewCourse']);
+Route::post('/cadviser/course/',[AdminController::class,'viewCourse'])->name('cadviser.course');
+
+Route::get('/cadviser/manage_course/',[AdminController::class,'cadviserManageCourse']);
+Route::get('/cadviser/dashboard/report',[AdminController::class,'cadviserReportdashboard']);
+Route::get('/finance/dashboard/',[AdminController::class,'finance_dashboard']);
+Route::get('/lsupport/dashboard/',[AdminController::class,'lsupport_dashboard']);
+Route::get('/lsupport/dashboard/report',[AdminController::class,'lsupportReportdashboard']);
+Route::get('/helpdesk/dashboard/',[AdminController::class,'helpdesk_dashboard']);
+Route::get('/helpdesk/dashboard/report',[AdminController::class,'helpdeskReportdashboard']);
+Route::get('/helpdesk/applnotpaid/',[AdminController::class,'helpdeskReportApplNotPaid']);
+Route::get('/helpdesk/applnotsubmit/',[AdminController::class,'helpdeskReportApplNotSubmit']);
+Route::get('/helpdesk/applnotaccept/',[AdminController::class,'helpdeskReportApplNotAccept']);
+
+
+Route::get('/admin/changepassword',[AdminController::class,'changepassword'])->name('admin.changepassword');;
+Route::post('/admin/updatepassword',[AdminController::class,'updatepassword'])->name('admin.updatepassword');;
+
+
+
+
+Route::get('/admission/dashboard',[AdmissionController::class,'admission_dashboard']);
+Route::get('/admission/dashboard/application',[AdmissionController::class,'admissionApplicationDashboard']);
+Route::get('/admission/dashboard/admission',[AdmissionController::class,'manageAdmissionDashboard']);
+Route::get('/admin/dashboard/student',[AdminController::class,'adminStudentDashboard']);
+
+
+Route::get('/student/dashboard',[StudentController::class,'student_dashboard']);
+Route::get('/student/dashboard/biodata',[StudentController::class,'studentBiodataDashboard']);
+Route::get('/student/dashboard/payment',[StudentController::class,'studentPaymentDashboard']);
+Route::get('/student/dashboard/registration',[StudentController::class,'studentRegistrationDashboard']);
+Route::get('/student/dashboard/result',[StudentController::class,'studentResultDashboard']);
+
+Route::get('/applicant/dashboard',[ApplicationController::class,'applicant_dashboard']);
+Route::get('/applicant/dashboard/biodata',[ApplicationController::class,'applicantBiodataDashboard']);
+Route::get('/applicant/dashboard/payment',[ApplicationController::class,'applicantPaymentDashboard']);
+Route::get('/applicant/dashboard/admission',[ApplicationController::class,'applicantAdmissionDashboard']);
+
 //Route::get('/admin/applicant/transaction',['uses'=>'ApplicationController@transaction','as'=>'admin.transaction','middleware'=>'roles','roles'=>'Super Admin']);
 Route::get('/admin/applicant/transaction',[ApplicationController::class,'transaction'])->name('applicant.transaction');
 Route::get('/admin/applicant/report',[ApplicationController::class,'getApplicantsReport'])->name('admin.applreport');
@@ -148,6 +276,10 @@ Route::post('/admin/applicant/applreport',[ApplicationController::class,'applrep
 
 Route::get('/admin/applicant/applpaid',[ApplicationController::class,'applpaid'])->name('admin.applpaid');
 Route::get('/admin/applicant/applnotpaid',[ApplicationController::class,'applnotpaid'])->name('admin.applnotpaid');
+
+Route::get('/finance/applpaid',[ApplicationController::class,'finance_applpaid'])->name('finance.applpaid');
+Route::get('/finance/studentpaid',[ApplicationController::class,'studentpaid'])->name('finance.studentpaid');
+
 
 //ADMISSION
 Route::get('/admission/applist',[AdmissionController::class,'getApplicationList'])->name('admission.applist');
@@ -216,6 +348,8 @@ Route::get('/admin/course/create',[CourseController::class,'create'])->name('adm
 Route::post('/admin/course/store',[CourseController::class,'store'])->name('admin.course.store');
 Route::patch('/admin/course/{course}',[CourseController::class,'update'])->name('admin.course.update');
 Route::delete('/admin/course/{course}',[CourseController::class,'destroy'])->name('admin.course.destroy');
+Route::post('/admin/course/import',[CourseController::class,'importcourse'])->name('admin.course.import');
+Route::get('/admin/course/upload',[CourseController::class,'import'])->name('admin.indeximport');
 //ADMIN EXAM
 Route::get('/admin/exam/show/{exam}',[ExamController::class,'show'])->name('admin.exam.show');
 Route::get('/admin/exam',[ExamController::class,'index'])->name('admin.exam.index');
@@ -336,6 +470,12 @@ Route::get('/admin/role/create',[RoleController::class,'create'])->name('admin.r
 Route::post('/admin/role/store',[RoleController::class,'store'])->name('admin.role.store');
 Route::patch('/admin/role/{role}',[RoleController::class,'update'])->name('admin.role.update');
 Route::delete('/admin/role/{role}',[RoleController::class,'destroy'])->name('admin.role.destroy');
+
+Route::get('/admin/registration',[AdminController::class,'adminRegistration'])->name('admin.registration');
+
+Route::get('/admin/biodata',[AdminController::class,'adminBiodata'])->name('admin.biodata');
+Route::post('/admin/biodatapost',[AdminController::class,'adminBiodataPost'])->name('admin.biodatapost');
+Route::post('/admin/editbiodata',[AdminController::class,'adminEditBiodata'])->name('admin.editbiodata');
 
 //Group them together
 //Route::controller(JobController::class)->group(function () {

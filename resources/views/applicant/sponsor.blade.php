@@ -2,6 +2,12 @@
     <x-slot:heading>
         APPLICATION FORM FOR {{$terms[0]->name}} SESSION  - SPONSOR
     </x-slot:heading> 
+
+    <x-flash-message/>
+
+    @foreach($applications as $appls)
+    @endforeach
+
     @if($count > 0)
     <form method="POST" action="{{ route('applicant.preview') }}">
         @csrf
@@ -14,7 +20,7 @@
           class="border-b border-neutral-200 bg-neutral-50 font-medium dark:border-white/10 dark:text-neutral-800">
           <tr>
             
-            <th scope="col" colspan="2"  class="px-6 py-4">Sponsor.</th>
+            <th scope="col" colspan="2"  class="px-6 py-4">Sponsor</th>
             
           </tr>
           <tr class="border-b border-neutral-200 dark:border-white/10">
@@ -60,7 +66,7 @@
         </tbody>
         </table>
     </div>
-
+   @if($appls['submitted']==0)
     <div class="flex items-center justify-center mt-8 mb-4">
             
         <a href="/applicant/examresult">
@@ -70,6 +76,7 @@
             {{ __('Save and Continue') }}
         </x-primary-button>
     </div>
+    @endif
     </form>
 
 
@@ -126,7 +133,7 @@
             class ="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6" required>
             <option value="0" disabled="disabled" selected>Select Relationship</option>
             @foreach($relationships as $relationship)                                        
-            <option value="{{$relationship->id}}">{{$relationship->name}}</option>  
+            <option value="{{$relationship->name}}">{{$relationship->name}}</option>  
             @endforeach                                                            
         </select>
         </div>

@@ -1,8 +1,8 @@
-<x-admin-role>
+<x-applicant-role>
     <x-slot:heading>
         Applicant Information
     </x-slot:heading> 
-  
+    <x-flash-message/> 
     
     <form method="POST" action="{{GATEWAYRRRPAYMENTURL}}">
         @csrf
@@ -118,9 +118,9 @@
         <div class="mt-6 flex items-center mb-4 justify-center mr-6 gap-x-6">
           <a href="/"><button type="button" class="text-sm font-semibold leading-6 text-gray-900">Cancel</button></a>
   
-            <x-form-button>Get Payment Code</x-form-button>
+            <x-form-button>Make Payment</x-form-button>
           </div>
           
     </form>
-       </x-admin-role>
+       </x-applicant-role>
   

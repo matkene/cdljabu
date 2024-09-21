@@ -31,7 +31,7 @@
 
                   <x-form-button>Update Certgrade</x-form-button>
                   
-                  <button  form="delete-form" class="text-red-500 bg-white-500 text-sm font-bold hover:bg-red-100 w-34 h-10"> Delete Certgrade</button>
+                  <button  form="delete-form" class="text-cyan-700 bg-white-500 text-sm font-bold hover:bg-cyan-100 w-34 h-10"> Delete Certgrade</button>
 
                 </div>
             </dl>

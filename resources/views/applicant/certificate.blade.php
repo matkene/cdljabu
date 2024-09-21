@@ -3,6 +3,11 @@
         APPLICATION FORM FOR {{$terms[0]->name}} SESSION  - CERTIFICATE
     </x-slot:heading> 
 
+
+    <x-flash-message/>
+    @foreach($applications as $appls)
+    @endforeach
+   
     <form method="POST" action="{{ route('applicant.certificatepost') }}"  enctype="multipart/form-data">
         @csrf
     
@@ -28,7 +33,7 @@
           </tr>
         </thead>
         <tbody> 
-            @foreach($certificates as $appl)
+            @foreach($certificate as $appl)
             @endforeach
             <?php 
             $data = @unserialize($appl->name);
@@ -58,7 +63,8 @@
         </tbody>
         </table>
     </div>
-
+    
+    @if($appls['submitted'] == 0)
     <div class="flex items-center justify-center mt-8 mb-4">
             
         <a href="/applicant/examresult">
@@ -68,6 +74,8 @@
             {{ __('Save and Continue') }}
         </x-primary-button>
     </div>
+    @endif
+    
     </form>
 
 
@@ -80,6 +88,7 @@
           <label for="name" class="block text-sm font-medium leading-6 text-gray-900">Certificate Name</label>
           <div class="mt-2">
             <select id="name" name="name[]" 
+                required
                 class ="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6" required>
                 <option value="0" disabled="disabled" selected>Select Certificate</option>
                 @foreach($certificates as $cert)
@@ -97,6 +106,7 @@
           <label for="grade" class="block text-sm font-medium leading-6 text-gray-900">Certificate Grade</label>
           <div class="mt-2">           
             <select id="grade" name="grade[]" 
+            required
             class ="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6" required>
             <option value="0" disabled="disabled" selected>Select Grade</option>
             @foreach($certgrades as $certgrade)
@@ -115,12 +125,14 @@
           <label for="image" class="block text-sm font-medium leading-6 text-gray-900">Upload Certificate (Jpg, Jpeg or Png)</label>
           <div class="mt-2">        
             <input type="file" name="certificate[]" id="certificate" 
+            required
             class="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
             </div>
           </div>
         </div>        
     </div> 
     <x-form-error name="certificate"/>
+    
             <div class="flex items-center justify-center mt-8 mb-4">
                     
                 <a href="/applicant/examresult">
@@ -130,6 +142,7 @@
                     {{ __('Save and Continue') }}
                 </x-primary-button>
             </div>
+        
             </form>
 
   @endif

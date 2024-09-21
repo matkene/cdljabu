@@ -24,7 +24,7 @@
                               class="border-b border-neutral-200 bg-neutral-50 font-medium dark:border-white/10 dark:text-neutral-800">
                               <tr>
                                 
-                                <th scope="col" colspan="8"  class="px-6 py-4">Manage Admission Letters </th>
+                                <th scope="col" colspan="8"  class="px-6 py-4 text-lg uppercase">Manage Admission Letters </th>
                                 
                               </tr>
                               <tr>
@@ -59,11 +59,11 @@
                               {{@$appl->year}}
                           </td> 
                           <td class="whitespace-nowrap  px-6 py-4 font-medium">
-                            <form action="{{url('admission/admitnow')}}" method="POST">
+                            <form action="{{url('admission/padmletter')}}" method="POST">
                                 @csrf
                                 
-                                <input type="hidden" name="admissionNumber" value="{{$appl->formno}}">
-                                <x-form-button>Print</x-form-button>
+                                <input type="hidden" name="formno" value="{{$appl->formno}}">
+                                <x-form-button>Print Letter</x-form-button>
                             </form>
                         </td>                  
                            

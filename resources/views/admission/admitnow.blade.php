@@ -25,7 +25,7 @@
                           <input type="hidden" value="{{$appl->state->name}}" name="state">
                            <input type="hidden" value="{{$appl->lga_id}}" name="lga_id">
                            <input type="hidden" value="{{$appl->lga->name}}" name="lga">
-                           <input type="hidden" value="{{$appl->level}}" name="level">
+                           {{-- <input type="hidden" value="{{$appl->level}}" name="level"> --}}
                            <input type="hidden" value="{{$appl->country_id}}" name="country_id">
                           
                            <input type="hidden" value="{{$appl->religion_id}}" name="religion_id">                        
@@ -54,7 +54,7 @@
                               class="border-b border-neutral-200 bg-neutral-50 font-medium dark:border-white/10 dark:text-neutral-800">
                               <tr>
                                 
-                                <th scope="col" colspan="2"  class="px-6 py-4">Admit </th>
+                                <th scope="col" colspan="2"  class="px-6 py-4">Admission Console </th>
                                 
                               </tr>
                             </thead>
@@ -98,9 +98,11 @@
                                <tr class="border-b border-neutral-200 dark:border-white/10">
                                 <td class="whitespace-nowrap  px-6 py-4 font-medium">Programme Offered</td>
                                 <td class="whitespace-nowrap  px-6 py-4 font-medium">
-                                  <select id="programme_id" name="programme_id" 
+                                  <select id="programme_id" 
+                                  name="programme_id" 
+                                  required
                                   class ="block w-full rounded-md border-0 px-1.5 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6" required>
-                                    <option value="0" disabled="disabled" selected>Select Programme</option>  
+                                    <option value="" disabled="disabled" selected>Select Programme</option>  
                                     @foreach ($programmes as $programme)   
                                     <option value="{{$programme->id}}">{{$programme->department}}</option>   
                                     @endforeach
@@ -113,9 +115,12 @@
                                <tr class="border-b border-neutral-200 dark:border-white/10">
                                 <td class="whitespace-nowrap  px-6 py-4 font-medium">Award</td>
                                 <td class="whitespace-nowrap  px-6 py-4 font-medium">
-                                  <select id="award_id" name="award_id" 
+                                  <select 
+                                  id="award_id" 
+                                  name="award_id" 
+                                  required
                                   class ="block w-full rounded-md border-0 px-1.5 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6" required>
-                                    <option value="0" disabled="disabled" selected>Select Award</option>  
+                                    <option value="" disabled="disabled" selected>Select Award</option>  
                                     @foreach ($awards as $award)   
                                     <option value="{{$award->id}}">{{$award->name}}  {{$award->year}}</option>   
                                     @endforeach
@@ -128,8 +133,9 @@
                                 <td class="whitespace-nowrap  px-6 py-4 font-medium">Level</td>
                                 <td class="whitespace-nowrap  px-6 py-4 font-medium">
                                   <select id="level" name="level" 
+                                  required
                                   class ="block w-full rounded-md border-0 px-1.5 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6" required>
-                                    <option value="0" disabled="disabled" selected>Select Level</option>  
+                                    <option value="" disabled="disabled" selected>Select Level</option>  
                                      
                                     <option value="100">100</option>
                                     <option value="200">200</option>
@@ -153,7 +159,8 @@
 
 
                     <div class="mt-6 flex items-center mb-4 justify-center mr-6 gap-x-6">
-                
+                      <a href="/admission/admit/"><button type="button" class="text-sm font-semibold leading-6 text-gray-900">Cancel</button></a>
+
                         <x-form-button>Click to Admit</x-form-button>
                       </div>
 

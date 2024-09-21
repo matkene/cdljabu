@@ -2,46 +2,139 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Application;
-use Illuminate\Support\Facades\Auth;
-use App\Models\Country;
+use Response;
+use App\Models\Lga;
+use App\Models\Exam;
 use App\Models\Mode;
+use App\Models\Term;
 use App\Models\User;
+use App\Models\Setup;
+use App\Models\State;
 use App\Models\Title;
 use App\Models\Gender;
-use App\Models\Marital;
-use App\Models\Lga;
-use App\Models\State;
-use App\Models\Bloodgroup;
-use App\Models\Relationship;
-use App\Models\Religion;
-use App\Models\Programme;
-use App\Models\School;
-use App\Models\Examboard;
-use App\Models\Examresult;
-use App\Models\Applpayment;
-use App\Models\Appltransaction;
-use App\Models\Sponsor;
-use App\Models\Employment;
-use App\Models\Certificate;
-use App\Models\Certgrade;
-use App\Models\Setup;
-use App\Models\Exam;
-use App\Models\Subject;
 use App\Models\Grader;
-use App\Models\Term;
-use Response;
+use App\Models\School;
+use App\Models\Country;
+use App\Models\Marital;
+use App\Models\Sponsor;
+use App\Models\Subject;
+use App\Models\Religion;
+use App\Models\Admission;
+use App\Models\Certgrade;
+use App\Models\Examboard;
+use App\Models\Programme;
+use App\Models\Bloodgroup;
+use App\Models\Employment;
+use App\Models\Examresult;
+use App\Models\Application;
+use App\Models\Applpayment;
+use App\Models\Certificate;
+use App\Models\Relationship;
+use Illuminate\Http\Request;
+use App\Models\Appltransaction;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 
 class ApplicationController extends Controller
 {
     //
-    public function index()
-    {
 
+    public function applicant_dashboard(){
+        //check if any transaction had been generated
+        $id  = Auth::user()->email;
+        $count = Applpayment::where('email', $id)->count();
+        //dd($count);
+        if($count == 0)
+        {
+        return view('applicant/index');
+        }else
+        {
+
+        return view('applicant.dashboard.index');
+        }
+    }
+
+
+    public function applicantBiodataDashboard(){
+        // $id = Auth::user()->username; // Get the email of the applicant as the username        
+        // $pay = 1;
+        // $application = DB::table('application')     
+        // ->where('email',$id)
+        // ->where('status',$pay)
+        // ->get();
+
+        // foreach($application as $appl){
+        //    $status = $appl->status;
+        //    $submitted = $appl->submitted; 
+        // } ['status'=>$status, 'submitted'=>$submitted]
+        return view('applicant.dashboard.biodata');
+    }
+
+    public function applicantPaymentDashboard(){
+        return view('applicant.dashboard.payment');
+    }
+
+    public function applicantAdmissionDashboard(){
+                
+        return view('applicant.dashboard.admission');
+    }
+
+    public function index()
+    {    
+        //Get details payment of application to show the right view
+        $id = Auth::user()->email;
+        //Get the max value of all the generated RRR status
+        $max_applpayments = Applpayment::where('email',$id)->max('status');
+        $applpayments = Applpayment::where('email',$id)->get()->toArray();
+        //dd($max_applpayments);
+        $counts = Applpayment::where('email',$id)->count(); // Check if applicant made attempt to get Trans ID
+        //dd($counts, $applpayments[0]['status']);
+        if($counts == 0){
         return view('applicant.index');
+        }elseif($counts > 0 AND $max_applpayments == 0){ // check if the max if 0
+        return view('applicant.index');
+        }else{
+
+        $pay = 1;  // status of paid
+        $application = DB::table('application')     
+         ->where('email',$id)
+         ->where('status',$pay)
+         ->get();
+
+         //dd($application);
+    
+        $applications = Application::where('email',$id)->get();
+        $count = Application::where('email',$id)->count();   
+            
+
+        $countries = Country::all();
+        $modes =     Mode::all();
+        $titles =    Title::all();
+        $genders =   Gender::all();
+        $maritals =  Marital::all();
+        $states =    State::all();
+        $lgas =      Lga::all();
+        $religions = Religion::all(); 
+        $programmes = Programme::all(); 
+        $schools = School::all(); 
+        $bloodgroups = Bloodgroup::all();
+        $setups      = Setup::all();
+        $users =       User::where('email', Auth::user()->email)->get();
+
+        
+
+            //dd($count);
+            //$data['count'] = $count;    
+            
+            $terms        = Term::where('status','Active')->get();
+            return view('applicant.applhome', ['modes'=>$modes, 'bloodgroups'=> $bloodgroups, 
+            'genders'=>$genders, 'maritals'=>$maritals, 'states' => $states, 'users' => $users, 
+            'countries' => $countries, 'religions' => $religions,'programmes' =>$programmes, 
+            'schools' => $schools,'setups'=>$setups, 'terms'=>$terms, 'applications'=>$applications,
+             'titles' => $titles,  'lgas' => $lgas, 'count' => $count, 'application'=>$application,
+             'max_applpayments' => $max_applpayments]);
+        }
 
     }
 
@@ -58,11 +151,18 @@ class ApplicationController extends Controller
         ->where('application.status',$pay)
         ->get();
         */
+        $max_applpayments = Applpayment::where('email',$id)->max('status');
 
         $application = DB::table('application')     
         ->where('email',$id)
         ->where('status',$pay)
         ->get();
+        
+        $status = $application[0]->status; // Payment of Application form
+                
+
+        //dd($status);
+       // die();
 
         $countries = Country::all();
         $modes =     Mode::all();
@@ -84,6 +184,8 @@ class ApplicationController extends Controller
             // check if the form had been started
         $applications = Application::where('email',$id)->get();
         $count = Application::where('email',$id)->count();
+        $applicant = Application::where('email',$id)->get()->toArray();
+        $submitted =  @$applicant[0]['submitted']  ;
         //$data['count'] = $count;    
         
         $terms        = Term::where('status','Active')->get();
@@ -92,9 +194,8 @@ class ApplicationController extends Controller
      'maritals'=>$maritals, 'states' => $states, 'users' => $users, 'countries' => $countries,
      'religions' => $religions,'programmes' =>$programmes, 'schools' => $schools,'setups'=>$setups, 
      'terms'=>$terms, 'applications'=>$applications, 'titles' => $titles,  'lgas' => $lgas, 
-     'count' => $count, 'application' =>$application]);
-
-    
+     'count' => $count, 'application' =>$application, 'submitted'=>$submitted, 'status'=>$status,
+      'max_applpayments'=>$max_applpayments]);   
 
     }
 
@@ -151,10 +252,11 @@ class ApplicationController extends Controller
             $applications->mode_id = $request->input('mode_id');
             $applications->mphone = $request->input('mphone');
             $applications->religion_id = $request->input('religion_id');
+            $applications->place_ofbirth = $request->input('place_ofbirth');
             $applications->bloodgroup_id = $request->input('bloodgroup_id'); 
 
             if($applications->save()) {
-                return redirect()->route('applicant.examresult')->with('message', 'Update successful.  You can continue');
+                return redirect()->route('applicant.examresult')->with('message', 'Biodata Update successful.');
                 }
 
 
@@ -206,8 +308,8 @@ class ApplicationController extends Controller
         //$formno =  Application::where('email', $id)->get()->toArray();
         
         //$examboards = Examboard::all();
-        $examboards = Examboard::where('formno', $applications[0]->formno)->get();
-        $count = Examboard::where('formno', $applications[0]->formno)->count();
+        $examboards = Examboard::where('formno', @$applications[0]->formno)->get();
+        $count = Examboard::where('formno', @$applications[0]->formno)->count();
         
         $setups      = Setup::all();
         $terms =  Term::where('status','Active')->get();
@@ -568,12 +670,17 @@ class ApplicationController extends Controller
         $submitted = $application[0]->submitted;  // 
         
         $applications =  Application::where('email',$id)->get()->toArray();
+        //dd($applications[0]['submitted']);
+        //$submitted = $applications[0]['submitted'];  //added
         $certificates = Certificate::all(); //All the certificate name
         $certgrades  = Certgrade::all();
         $terms = Term::where('status','Active')->get();
         $count = DB::table('applcerts')      
-        ->where('formno',$application[0]->formno)
+        ->where('formno',$applications[0]['formno'])
         ->count();
+        $certificate = DB::table('applcerts')      
+        ->where('formno',$applications[0]['formno'])
+        ->get()->toArray();
         //$data['submitted'] = 0;  // Form not submitted
          // Certificate changed to Applcert table
         /*
@@ -598,9 +705,9 @@ class ApplicationController extends Controller
         // Upload Relvant Certificate, by attaching
         
        */
-        return view('applicant.certificate',['certificates'=>$certificates, 
+        return view('applicant.certificate',['certificates'=>$certificates,'certificate'=>$certificate, 
         'certgrades' =>$certgrades,'terms'=>$terms, 'applications' => $applications,
-         'status' => $status, 'submitted'=>$submitted, 'count'=>$count]);
+        'submitted'=>$submitted,  'status' =>$status,'count'=>$count]);
     }
 
     public function certificatepost(Request $request){
@@ -664,7 +771,8 @@ class ApplicationController extends Controller
         $application = DB::table('application')      
         ->where('application.email',$id)
         ->where('application.status',$pay)
-        ->get()->toArray();
+        ->get()->toArray();      
+
         $formno = $application[0]->formno;
         $status = $application[0]->status;
         $submitted = $application[0]->submitted;  //        
@@ -672,10 +780,11 @@ class ApplicationController extends Controller
         $terms =  Term::where('status','Active')->get();
         $employments = Employment::where('formno',$formno)->get();
         $count = Employment::where('formno',$formno)->count();
+        $applications =  Application::where('email',$id)->get()->toArray();
         //$data['submitted'] = 0;  // Form not submitted
 
         return view('applicant.employment', ['terms'=>$terms, 'employments'=>$employments,
-        'count'=>$count, 'submitted'=>$submitted, 'status'=>$status]);
+        'count'=>$count, 'submitted'=>$submitted, 'status'=>$status,'applications'=>$applications]);
         /*
         ->withSesions($sesions)
         ->withEmployments($employments)
@@ -708,7 +817,7 @@ class ApplicationController extends Controller
         
        if ($employments->save()){
         //Name of Sponsor. Relationship, Address  , Email, Phone     
-        return redirect()->route('applicant.sponsor')->with('status','Employment History Added Successfully');
+        return redirect()->route('applicant.sponsor')->with('message','Employment History Added Successfully');
        }
     }
 
@@ -733,12 +842,15 @@ class ApplicationController extends Controller
         ->select('sponsors.*','relationships.name as relationshipname')
         ->where('sponsors.formno',$formno)
         ->get();
+
+        $applications =  Application::where('email',$id)->get()->toArray();
        
         $count = Sponsor::where('formno',$formno)->count();
         //$data['submitted'] = 0;  // Form not submitted
         //Name of Sponsor. Relationship, Address  , Email, Phone     
         return view('applicant.sponsor',['terms'=>$terms, 'relationships'=>$relationships,
-        'status'=>$status, 'submitted'=>$submitted,'count'=>$count,'sponsors'=>$sponsors]);
+        'status'=>$status, 'submitted'=>$submitted,'count'=>$count,'sponsors'=>$sponsors,
+         'applications'=>$applications]);
         /*
         ->withSponsors($sponsors)
         ->withSesions($sesions)        
@@ -939,23 +1051,80 @@ class ApplicationController extends Controller
         ->where('applpayments.status',$status)
         ->get();
 
+        $count = DB::table('applpayments')
+        ->leftjoin('application', 'applpayments.formno' ,'=', 'application.formno')
+        ->select('applpayments.*','application.referrer as referrers')
+        ->where('applpayments.status',$status)
+        ->count();
+
         //dd($applpayments);
         //$appltransactions =  Appltransaction::all();
         $setups = Setup::all();
         $terms = Term::all();
         return view('admin.applicant.applpaid',['terms'=>$terms, 'applpayments'=>$applpayments,
+        'setups'=>$setups,'count'=>$count]);
+       // ->withSetups($setups)
+        //->withSesions($sesions)
+        //->withApplpayments($applpayments); 
+    }
+
+
+    // Display all users that had paid for the form for admin
+    public function finance_applpaid(){
+        $status =1;
+        //$applpayments = Applpayment::where('status',$status)->get();
+        $applpayments = DB::table('applpayments')
+        ->leftjoin('application', 'applpayments.formno' ,'=', 'application.formno')
+        ->select('applpayments.*','application.referrer as referrers')
+        ->where('applpayments.status',$status)
+        ->get();
+
+        //dd($applpayments);
+        //$appltransactions =  Appltransaction::all();
+        $setups = Setup::all();
+        $terms = Term::all();
+        return view('finance.applpaid',['terms'=>$terms, 'applpayments'=>$applpayments,
         'setups'=>$setups]);
        // ->withSetups($setups)
         //->withSesions($sesions)
         //->withApplpayments($applpayments); 
     }
 
+
+    public function studentpaid(){
+        $status =1;
+        //$applpayments = Applpayment::where('status',$status)->get();
+        $feespayments = DB::table('feespayments')
+        ->leftjoin('students', 'feespayments.matric' ,'=', 'students.matric')
+        ->leftjoin('programmes', 'students.programme_id' ,'=', 'programmes.id')
+        ->leftjoin('transactcodes', 'feespayments.pin' ,'=', 'transactcodes.pin')
+        ->select('feespayments.*','students.sname as stsname', 'students.fname as stfname',
+          'students.oname as stoname','programmes.progdesc as prog','transactcodes.rrr as trrr')
+        ->where('feespayments.relvant',$status)
+        ->where('transactcodes.tistatus',$status)
+        ->get();
+
+        //dd($applpayments);
+        //$appltransactions =  Appltransaction::all();
+        $setups = Setup::all();
+        $terms = Term::all();
+        return view('finance.studentpaid',['terms'=>$terms, 'feespayments'=>$feespayments,
+        'setups'=>$setups]);
+       // ->withSetups($setups)
+        //->withSesions($sesions)
+        //->withApplpayments($applpayments); 
+    }
+
+
+
     // Display all transactions for admin
     public function transaction(){
         $appltransactions =  Appltransaction::all();
+        $count =  Appltransaction::count();
         $setups = Setup::all();
         $terms = Term::all();
-        return view('admin.applicant.transaction',['terms'=>$terms, 'appltransactions'=>$appltransactions]);
+        return view('admin.applicant.transaction',['terms'=>$terms, 'appltransactions'=>$appltransactions
+        ,'count'=>$count]);
      
     }
 
@@ -979,6 +1148,7 @@ class ApplicationController extends Controller
 
         
         $applications =  Application::all();
+        $count =  Application::count();        
         $setups = Setup::all();
         $terms = Term::all();
         $bloodgroups = Bloodgroup::all();
@@ -999,7 +1169,7 @@ class ApplicationController extends Controller
         'programmes'=>$programmes, 'modes'=>$modes, 'maritals'=>$maritals,'lgas'=>$lgas, 'states'=>$states,
         'graders'=>$graders,'genders'=>$genders, 'examboards'=>$examboards, 'exams'=>$exams, 
         'certificates'=>$certificates,'bloodgroups'=>$bloodgroups, 'terms'=>$terms, 'schools' =>$schools,
-        'applications'=>$applications]);
+        'applications'=>$applications,'count'=>$count]);
             }
 
       

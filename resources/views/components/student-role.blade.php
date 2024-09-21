@@ -1,130 +1,87 @@
 <!DOCTYPE html>
-<html lang="en" class="h-full bg-gray-100">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>CDL JABU - STUDENTS</title>
+    <title>CDL JABU</title>
+    <script src="//unpkg.com/alpinejs" defer></script>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://unpkg.com/tailwindcss@1.8.10/dist/tailwind.min.css" rel="stylesheet" />
+
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css">
 </head>
+{{-- < class="bg-gray-200 2xl:flex"> --}}
 
-<body class="h-full">
+  <body class="bg-gray-200">
+    <nav class="bg-white border-b border-gray-300">
+        <div class="flex justify-between items-center px-9">
+            <!-- Ícono de Menú -->
+            <button id="menu-button" class="lg:hidden">
+                <i class="fas fa-bars text-cyan-500 text-lg"></i>
+            </button>
+            <!-- Logo -->
+            <div class="ml-1">
+                <img src="{{asset('logo.png')}}" alt="logo" class="h-20 w-30">
+               </div>
 
-    <!-- component -->
-<div class="flex h-screen bg-white-900">
-    <div class="flex-1 flex flex-col overflow-hidden">
-      <header class="flex justify-between items-center bg-white p-4">
-        <div class="flex-shrink-0">
-            <img class="h-16 w-22" src="{{asset('logo.png')}}" alt="Your Company">
-           
-          </div>
-        <div class="flex">CENTRE FOR DISTANCE LERANING </br>JOSEPH AYO BABALOLA UNIVERISTY</div>
 
-        <div class="flex">
+            <!-- Notification -->
+            <div class="space-x-2">
+               Welcome, {{Auth::user()->sname.' '.Auth::user()->fname}}
+                @auth
+            <button>
+                <i class="fas fa-bell text-cyan-500 text-lg"></i>
+            </button>
 
-            <div class="hidden md:block">
-                <div class="ml-4 flex items-center md:ml-6">
-                  @guest
-                  <x-link href="/login" :active="request()->is('login')">Login</x-link>
-                  <x-link href="/register" :active="request()->is('register')">Register</x-link>  
-                  @endguest
-                  @auth
-                    <form action="/logout" method="POST">
-                      @csrf
-                      <x-form-button>Logout</x-form-button>
-                    </form>
-                  @endauth
-                  
-            <div class="relative ml-3">
-                <div>
-                  <button type="button" class="relative flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
-                    <span class="absolute -inset-1.5"></span>
-                    <span class="sr-only">Open user menu</span>
-                    <img class="h-8 w-8 rounded-full" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="">
-                  </button>
-                </div>               
-                
-              </div>
+            <!-- Profile -->
+            <button>
+                <i class="fas fa-user text-cyan-500 text-lg"></i>
+            </button>
+            
+            <!-- Logout -->
+            <form method="POST" action="/logout" class="inline">
+                @csrf
+                <button type="submit"> <i class="fa fa-power-off text-cyan-500 text-lg"> </i> 
+                </button>
+            </form>
+            @endauth
+ 
+
             </div>
         </div>
-        </div>
-      </header>
-      
-      <div class="flex h-full">
-        <nav class="flex w-72 h-full bg-blue-500">
-          <div class="w-full flex mx-auto px-6 py-8">
-            <div class="w-full h-full flex items-center justify-center text-gray-900 text-xl">
-                
-                 <div class="flex flex-col">
-                    <div class="pb-2"> 
-                        <x-admin-link href="/login" :active="request()->is('login')">DASHBOARD</x-admin-link>
-                    </div>
-                    <div class="pb-2"> 
-                        <x-admin-link href="/login" :active="request()->is('login')">BIODATA</x-admin-link>
-                        
-                    </div>
-                    <div class="pb-2"> 
-                        <x-admin-link href="/login" :active="request()->is('login')">PAYMENTS</x-admin-link>
-                    </div>
-                    <div class="pb-2"> 
-                        <x-admin-link href="/login" :active="request()->is('login')">REGISTRATION</x-admin-link>
-                    </div>
-                    <div class="pb-2"> 
-                        <x-admin-link href="/login" :active="request()->is('login')">STUDENTS</x-admin-link>
-                    </div>
-                    <div class="pb-2"> 
-                        <x-admin-link href="/login" :active="request()->is('login')">RESULTS</x-admin-link>
-                    </div>
-                    <div class="pb-2"> 
-                        <x-admin-link href="/login" :active="request()->is('login')">E-LEARNING</x-admin-link>
-                    </div>
-                    
-                    
-                 </div>
+    </nav>
+
+   <x-student-sidebar/>    
 
 
-                
+   <div class="lg:w-800 lg:ml-64 px-4 py-8">
 
-            </div>
-          </div>
-        </nav>
-        <main class="flex flex-col w-full bg-white-blue overflow-x-hidden overflow-y-auto mb-14">
-          <div class="flex w-full mx-auto px-6 py-8">
-            <div class="flex flex-col w-full h-full text-gray-900 text-xl border-4 border-gray-900 border-dashed">
-              <div class="flex w-full  h-60 items-center justify-center mx-auto bg-green-400 border-b border-gray-600">
-                United Lincolnshire Hospitals Trust is committed to safeguarding and promoting the welfare of
-        children, young people and adults, both as service users and visitors to Trust premises. All
-        staff have a responsibility to safeguard and promote the welfare of children and adults. 
+    <!-- Search -->
+   {{-- <x-search /> --}}
 
-              </div>
-              <div class="flex w-full h-60 items-center justify-center mx-auto bg-green-400 border-b border-gray-600">Post</div>
-              
-            </div>
-          </div>
-        </main>
-        
-      </div>
-    </div>
-  </div>
-  
-  <style>
-  ::-webkit-scrollbar {
-    width: 5px;
-    height: 5px;
-  }
-  ::-webkit-scrollbar-thumb {
-    background: linear-gradient(13deg, #7bcfeb 14%, #e685d3 64%);
-    border-radius: 10px;
-  }
-  ::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(13deg, #c7ceff 14%, #f9d4ff 64%);
-  }
-  ::-webkit-scrollbar-track {
-    background: #ffffff;
-    border-radius: 10px;
-    box-shadow: inset 7px 10px 12px #f0f0f0;
-  }
-  </style>
+ <!-- Report Areas -->
+ {{-- <x-report-area/> --}}
 
+<!-- Tabla -->
+<div class="bg-white rounded-lg p-4 shadow-md my-2">
+{{$slot}}
+
+</div>
+</div>
 </body>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var menuButton = document.getElementById('menu-button');
+        var sidebar = document.getElementById('sidebar');
+
+        menuButton.addEventListener('click', function() {
+            sidebar.classList.toggle('hidden');
+            sidebar.classList.toggle('lg:block');
+        });
+    });
+</script>
+
 </html>

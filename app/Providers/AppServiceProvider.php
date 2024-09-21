@@ -32,5 +32,8 @@ class AppServiceProvider extends ServiceProvider
             return $job->employer->user->is($user);
             
         });
+
+
+        
     }
 }

@@ -2,7 +2,7 @@
     <x-slot:heading>
         APPLICATION FORM FOR {{@$terms[0]->name}} SESSION 
     </x-slot:heading> 
-    
+    <x-flash-message/> 
            
             
             @foreach($applications as $appl)
@@ -419,10 +419,9 @@
         </div>
 
         <div class="flex items-center justify-center mt-8 mb-4">
+          <button class="ms-4 text-base font-semibold leading-6 text-cyan-900" onClick="window.print()">Click to  Print</button>
+
             
-            <x-primary-button class="ms-4">
-                {{ __('Print') }}
-            </x-primary-button>
         </div>
         
     

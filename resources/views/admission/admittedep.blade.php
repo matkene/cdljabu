@@ -16,18 +16,25 @@
                 <div class="flex flex-col">
                     <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">                      
                       <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
+                       
                         <div class="overflow-hidden">
+                         
                           <table
                             class="min-w-full text-left text-sm font-light text-surface dark:text-white">
                             <thead
                               class="border-b border-neutral-200 bg-neutral-50 font-medium dark:border-white/10 dark:text-neutral-800">
+                              
+                              <tr>
+                                
+                                <th scope="col"  colspan="7" class="px-6 py-4 text-lg uppercase"> LISTS OF ADMITTED CANDIDATE FOR SESSION  </th>
+                                
+                              </tr>
                               <tr>
                                 <th scope="col" class=" px-6 py-4">S/N</th>
                                 <th scope="col" class=" px-6 py-4">Admission No</th>
                                 <th scope="col" class=" px-6 py-4">Name</th>
                                 <th scope="col" class=" px-6 py-4">Phone</th>                                
-                                <th scope="col" class=" px-6 py-4">State</th>
-                                <th scope="col" class=" px-6 py-4">Lga</th>
+                                <th scope="col" class=" px-6 py-4">State</th>                                
                                 <th scope="col" class=" px-6 py-4">Programme</th>
                                 <th scope="col" class=" px-6 py-4">Duration</th>
                                 
@@ -45,9 +52,7 @@
                                 <td class="whitespace-nowrap  px-6 py-4 font-medium">
                                   {{$appl->mphone}}</td>
                                 <td class="whitespace-nowrap  px-6 py-4 font-medium">{{$appl->state}} </td>
-                                <td class="whitespace-nowrap  px-6 py-4 font-medium">
-                                    {{$appl->lga}}
-                                </td>                                 
+                                                                
                               <td class="whitespace-nowrap  px-6 py-4 font-medium">
                                 {{$appl->aname}}
                             </td> 

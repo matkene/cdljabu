@@ -83,7 +83,7 @@ class BloodgroupController extends Controller
         //dd($request);
         request()->validate(
             [
-                'name' => ['required'],               
+                'name' => 'required|unique:bloodgroups|min:1',             
         
             ]
             );

@@ -77,9 +77,9 @@ class RegisterUserController extends Controller
             'fname' => 'required',
             'sname' => 'required',
             'oname' => 'required',            
-            'email' => 'required',
-            'mphone' => 'required',  //check for option for num may            
-            'password' => 'required'//it will check for the password_confirmation
+            'email' => ['required','email'],
+            'mphone' => 'required',  //check for option for num may  ['required', 'min:6']           
+            'password' => ['required', 'min:6']//it will check for the password_confirmation
        ]);
     
 
@@ -87,8 +87,8 @@ class RegisterUserController extends Controller
       // Create formno
       
       
-      // Assume the role id for applicant is 2
-      $roleid = 2;
+      // Assume the role id for applicant is 7 and 2 for student
+      $roleid = 7;
       //$address = 'CDL JABU';
       $terms =  Term::where('status','Active')->get();
        // update the user migration later
@@ -128,13 +128,9 @@ class RegisterUserController extends Controller
     if(!empty($application)){
         $insertData = DB::table('application')->insert($application);
     }
-    
-       //login
-       //Auth::login($user);
-
-       //dd('Doen');
+        
      
-       return redirect('/authorize/login')->with('message','Logged In');
+       return redirect('/authorize/login')->with('message','Account Created Successful. Login to continue payment of application form');
 
     }
      public function remita_transaction(Request $request, Applpayment $applpayment)

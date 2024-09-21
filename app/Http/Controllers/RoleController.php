@@ -71,7 +71,7 @@ class RoleController extends Controller
     public function update(Request $request, Role $role)
     {
         //
-        $role->validate(
+        $request->validate(
         [
            'name' => ['required','string','min:3'],
         ]);
@@ -81,7 +81,7 @@ class RoleController extends Controller
             'name'=> $request->name
          ]);
 
-        return redirect('/admin/role')->with("status","Role updated Successfully");
+        return redirect('/admin/role')->with("message","Role updated Successfully");
     }
 
     /**

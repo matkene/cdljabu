@@ -65,6 +65,10 @@
                               </tr>                          
                               
                               @endforeach
+                              <tr class="border-b border-neutral-200 dark:border-white/10">
+                                <td class="whitespace-nowrap  px-6 py-4 font-medium" colspan="9">
+                                  Total Record: {{$count}}</td>
+                              </tr>
                             </tbody>
                           </table>
                         </div>

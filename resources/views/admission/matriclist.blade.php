@@ -23,33 +23,36 @@
                             <thead
                               class="border-b border-neutral-200 bg-neutral-50 font-medium dark:border-white/10 dark:text-neutral-800">
                               <tr>
+                                
+                                <th scope="col" colspan="5"  class="px-6 py-4 text-lg uppercase">Lists of Matric Numbers Generated </th>
+                                
+                              </tr>
+                              <tr>
                                 <th scope="col" class=" px-6 py-4">S/N</th>
                                 <th scope="col" class=" px-6 py-4">Admission No</th>
                                 <th scope="col" class=" px-6 py-4">Matric</th>
-                                <th scope="col" class=" px-6 py-4">Name</th>
-                                <th scope="col" class=" px-6 py-4">Sex</th>                                
+                                <th scope="col" class=" px-6 py-4">Name</th>                                                                
                                 <th scope="col" class=" px-6 py-4">Programme</th>
                                 <th scope="col" class=" px-6 py-4">Date</th>
                                 
                               </tr>
                             </thead>
                             <tbody>
-                                @foreach ($students as $key=>$appl)                                   
+                                @foreach ($admissions as $key=>$appl)                                   
                                 
                                 
                                 <tr class="border-b border-neutral-200 dark:border-white/10">
                             
                                 <td class="whitespace-nowrap  px-6 py-4 font-medium">{{++$key}}</td>
-                                <td class="whitespace-nowrap  px-6 py-4 font-medium">{{$appl->formno}}</td>
+                                <td class="whitespace-nowrap  px-6 py-4 font-medium">{{$appl->applno}}</td>
                                 <td class="whitespace-nowrap  px-6 py-4 font-medium">{{$appl->matric}}</td>
-                                <td class="whitespace-nowrap  px-6 py-4 font-medium">{{$appl->name}}</td>
-                                <td class="whitespace-nowrap  px-6 py-4 font-medium">
-                                  {{$appl->gender->name}}</td>                                                      
+                                <td class="whitespace-nowrap  px-6 py-4 font-medium">{{$appl->sname.' '.$appl->fname.' '.$appl->oname}}</td>
+                                                                                     
                               <td class="whitespace-nowrap  px-6 py-4 font-medium">
-                                {{$appl->programme->progdesc}}
+                                {{$appl->aname}}
                             </td> 
                             <td class="whitespace-nowrap  px-6 py-4 font-medium">
-                              {{@$appl->date}}
+                              {{@$appl->dategen}}
                           </td>                  
                            
                               </tr>

@@ -1,33 +1,30 @@
 <x-applicant-role>
-  <x-slot:heading>
-      Applicant Information
-  </x-slot:heading> 
+ 
 
-  
+  <x-flash-message/>
   <form method="POST" action="{{route('applicant.remita')}}">
       @csrf
                     <input type="hidden" name="sname" value="{{Auth::user()->sname}}">
                     <input type="hidden" name="fname" value="{{Auth::user()->fname}}">
                     <input type="hidden" name="oname" value="{{Auth::user()->oname}}">
                     <input type="hidden" name="email" value="{{Auth::user()->email}}">
-                    <input type="hidden" name="mphone" value="{{Auth::user()->mphone}}">
-                    
+                    <input type="hidden" name="mphone" value="{{Auth::user()->mphone}}">                   
                     
                         
 
-      <div>
+        
         <table
         class="min-w-full text-left text-sm font-light text-surface dark:text-white">
         <thead
-          class="border-b border-neutral-200 bg-neutral-50 font-medium dark:border-white/10 dark:text-neutral-800">
-          <tr>
+        class="border-b border-neutral-200 bg-neutral-50 font-medium dark:border-white/10 dark:text-neutral-800">
+        <tr>
             
             <th scope="col" colspan="2"  class="px-6 py-4">To make payment for Online Application form, please generate a payment code </th>
             
           </tr>
         </thead>
         <tbody>
-                          
+                
           <?php $terms = \App\Models\Term::where('status', 'Active')->get() ?>
 
           <tr class="border-b border-neutral-200 dark:border-white/10">        
@@ -90,7 +87,7 @@
           
         </tbody>
       </table> 
-      </div>
+      
 
       <div class="mt-6 flex items-center mb-4 justify-center mr-6 gap-x-6">
         <a href="/"><button type="button" class="text-sm font-semibold leading-6 text-gray-900">Cancel</button></a>
@@ -99,4 +96,5 @@
         </div>
         
   </form>
+
      </x-applicant-role>

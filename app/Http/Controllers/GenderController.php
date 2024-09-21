@@ -74,7 +74,7 @@ class GenderController extends Controller
         //
         $request->validate(
             [
-                'name' => 'required|min:2',
+                'name' => 'required|unique:genders|min:2',
             ]);
         
         $gender->update(

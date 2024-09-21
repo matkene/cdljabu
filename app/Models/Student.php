@@ -13,7 +13,7 @@ class Student extends Model
         'gender_id','mode_id', 'title_id', 'religion_id', 'state_id', 'lga_id','bloodgroup_id',
         'marital_id','spname', 'dateofmarriage','address', 'email',  'rel_nok','name_nok',
         'relationship_id', 'year_ofentry', 'course_duration','address_nok','mphone_nok',
-        'email_nok','passport','country_id','religion','term_id','mstatus'
+        'email_nok','passport','country_id','religion','term_id','mstatus','term'
     ];
 
     public function category()
@@ -47,9 +47,9 @@ class Student extends Model
     }
 
 
-    public function religion()
+    public function religions()
     {
-        return $this->belongsTo(Religion::class);
+        return $this->belongsTo(Religion::class,'religion_id');
     }
 
     public function state()
@@ -74,7 +74,7 @@ class Student extends Model
 
     public function relationship()
     {
-        return $this->belongsTo(Relationship::class);
+        return $this->belongsTo(Relationship::class,'rel_nok');
     }
 
     public function term()

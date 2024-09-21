@@ -3,6 +3,8 @@
         APPLICATION FORM FOR {{@$terms[0]->name}} SESSION  - SUCCESS
     </x-slot:heading> 
 
+    <x-flash-message/>
+
           <div class="mt-0 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
             <div class="sm:col-span-6 mt-5">                 
                 <table

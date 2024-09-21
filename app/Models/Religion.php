@@ -16,6 +16,9 @@ class Religion extends Model
         return $this->hasMany(Student::class);
     }
 
+
+    
+
     public function application()
     {
         return $this->hasMany(Application::class);

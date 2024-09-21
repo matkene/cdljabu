@@ -3,7 +3,7 @@
         APPLICATION FORM FOR {{$terms[0]->name}} SESSION  - EXAM RESULTS
     </x-slot:heading> 
   
-    
+    <x-flash-message/>  
       
   
         <div>
@@ -43,10 +43,12 @@
           </tbody>
         </table> 
         </div>
-  
+           
+        @if($appl->submitted == 0)
         <div class="mt-6 flex items-center mb-4 justify-center mr-6 gap-x-6">  
             <x-form-button>  Add a New Examination Result</x-form-button>
           </div>
+          @endif
 
         </form>
 
@@ -80,15 +82,10 @@
                @endif
                <td class="whitespace-nowrap  px-6 py-4 font-medium">
                 
-                <form class="form" action="{{ route('applicant.examresultpostnew') }}" method="post">
-                <input type="hidden"  name="formno" value="{{$examboard->formno}}"> 
-                <input type="hidden"  name="id" value="{{$examboard->id}}"> 
-                <input type="hidden"  name="no_sitting" value="{{$examboard->no_ofsitting}}"> 
-                 {{ csrf_field() }}
-                 <x-primary-button class="ms-4">
-                  {{ __($examboard->exam->name .', '.$examboard->year) }}
-                 </x-primary-button>
-                    </form>
+                
+                
+                  {{ $examboard->exam->name .', '.$examboard->year }}
+                 
                </td>
                <td class="whitespace-nowrap  px-6 py-4 font-medium">
                 <a href="{{ asset('/public/uploads/' .$examboard->certificate)}}" download="{{$examboard->examboard}}">
@@ -98,13 +95,15 @@
                 </a>
             
                </td>
+               @if(@$appl->submitted == 0)
                <td class="whitespace-nowrap  px-6 py-4 font-medium">
                 <form class="form" action="{{ route('applicant.delexamresult') }}" method="post">
                     <input type="hidden"  name="formno" value="{{$examboard->formno}}"> 
                     <input type="hidden"  name="no_sitting" value="{{$examboard->no_ofsitting}}"> 
                     {{ csrf_field() }}<button type="submit" class="btn btn-primary">Delete</button>
                     </form>
-               </td>     
+               </td>
+               @endif     
                </tr>
                @endforeach
   

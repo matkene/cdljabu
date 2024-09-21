@@ -35,7 +35,7 @@ class GraderController extends Controller
         //
         $request->validate(
             [
-               'name' => ['required','string','min:2'],
+               'name' => 'required|unique:graders|min:2',
                'point' => ['required'],
             ]);
 
@@ -74,8 +74,8 @@ class GraderController extends Controller
         //
         $request->validate(
             [
-               'name' => ['required','string','min:2'],
-               'point' => ['required'],
+                'name' => 'required|unique:graders|min:2',
+                'point' => ['required'],
             ]);
 
         $grader->update(

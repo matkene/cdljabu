@@ -79,7 +79,7 @@ class CategoryController extends Controller
         //
         request()->validate(
             [
-                'name' => 'required|min:1',             
+                'name' => 'required|unique:categories|min:1',           
         
             ]
             );                       

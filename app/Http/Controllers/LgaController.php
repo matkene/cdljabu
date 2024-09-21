@@ -15,7 +15,7 @@ class LgaController extends Controller
     public function index()
     {
         //
-        $lgas = Lga::with('state')->latest()->paginate(10);
+        $lgas = Lga::with('state')->paginate(10);
         //$jobs =Job::with('employer')->latest()->paginate(4); 
          
         //$lgas = Lga::all();
@@ -82,7 +82,7 @@ class LgaController extends Controller
      */
     public function update(Request $request, Lga $lga)
     {
-        //
+        //dd(request());
         $request->validate(
             [
                 'name'=> ['required','string','min:3'],

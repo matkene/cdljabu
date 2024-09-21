@@ -79,7 +79,7 @@ class CertgradeController extends Controller
         //
         request()->validate(
             [
-                'name' => 'required|min:1',             
+                'name' => 'required|unique:certgrades|min:1',            
         
             ]
             );                       
@@ -89,7 +89,7 @@ class CertgradeController extends Controller
             
            ]);
            // redirect
-           return redirect('/admin/certgrade')->with('meesage','Updated Successfully');
+           return redirect('/admin/certgrade')->with('message','Certgrade updates successfully');
 
     }
 
@@ -100,6 +100,6 @@ class CertgradeController extends Controller
     {
         //
         $certgrade->delete();
-        return redirect('/admin/certgrade')->with('meesage','Certgrade deleted successfully');
+        return redirect('/admin/certgrade')->with('message','Certgrade deleted successfully');
     }
 }

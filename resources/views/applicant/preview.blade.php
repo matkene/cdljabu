@@ -3,6 +3,8 @@
         APPLICATION FORM FOR {{@$terms[0]->name}} SESSION  - PREVIEW
     </x-slot:heading> 
 
+    <x-flash-message/> 
+
     <form method="POST" action="{{ route('applicant.printform') }}">
         @csrf
     
